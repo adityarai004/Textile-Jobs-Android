@@ -11,6 +11,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        resourceConfigurations.addAll(listOf("hi","gu","en"))
         applicationId = "com.example.textilejobs"
         minSdk = 24
         targetSdk = 34
@@ -87,6 +88,8 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation("androidx.appcompat:appcompat:1.7.0")
+
 }
 
 kapt {

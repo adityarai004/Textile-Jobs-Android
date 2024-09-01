@@ -1,10 +1,11 @@
-package com.example.textilejobs.presentation.language
+package com.example.textilejobs.presentation.language.viewmodel
 
 import com.example.textilejobs.R
 
 data class LanguageState(
     val languages: List<LanguageModel> = languageList,
-    val selectedLanguage: Int = 0
+    val selectedLanguage: Int = 0,
+    val isLoading: Boolean = false
 )
 
 data class LanguageModel(
@@ -15,7 +16,7 @@ data class LanguageModel(
 
 val languageList = listOf(
     LanguageModel(
-        languageCode = "US-en",
+        languageCode = "en",
         language = "English",
         refImage = R.drawable.english_2
     ),

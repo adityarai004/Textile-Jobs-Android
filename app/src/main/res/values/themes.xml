@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.TextileJobs" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.TextileJobs" parent="Theme.AppCompat.DayNight.NoActionBar" />
 
     <style name="Theme.App.Start" parent="Theme.SplashScreen">
         <item name="postSplashScreenTheme">@style/Theme.TextileJobs</item>

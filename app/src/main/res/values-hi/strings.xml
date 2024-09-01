@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">कपड़ा नौकरियाँ</string>
+    <string name="language_of_choice">कृपया अपनी पसंद की भाषा चुनें</string>
 </resources>

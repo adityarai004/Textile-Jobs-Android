@@ -8,9 +8,12 @@ import com.example.textilejobs.presentation.language.LanguageRoute
 
 @Composable
 fun NavigationService(navHostController: NavHostController, startDestination: Any) {
-    NavHost(navController = navHostController, startDestination = startDestination){
+    NavHost(navController = navHostController, startDestination = startDestination) {
         composable<NavLanguageScreen> {
-            LanguageRoute()
+            LanguageRoute(onNavigateToLoginScreen = { navHostController.navigate(NavLoginScreen) })
+        }
+        composable<NavLoginScreen> {
+
         }
     }
 }
