@@ -2,4 +2,33 @@
 <resources>
     <string name="app_name">नौकरियाँ</string>
     <string name="language_of_choice">કૃપા કરીને તમારી પસંદગીની ભાષા પસંદ કરો</string>
+
+    <string name="empty_string"> </string>
+    <string name="login">લૉગિન કરો</string>
+    <string name="enter_your_email">તમારું ઈમેઈલ દાખલ કરો</string>
+    <string name="enter_your_first_name">તમારું પ્રથમ નામ દાખલ કરો</string>
+    <string name="enter_your_last_name">તમારું છેલ્લું નામ દાખલ કરો</string>
+    <string name="enter_your_password">તમારું પાસવર્ડ દાખલ કરો</string>
+    <string name="confirm_your_password">તમારા પાસવર્ડને ખાતરી કરો</string>
+    <string name="icon_password_visible">પાસવર્ડ દેખાય છે</string>
+    <string name="icon_password_hidden">પાસવર્ડ છુપાય છે</string>
+    <string name="login_error_msg_empty_email_mobile">ઈમેઈલ ફીલ્ડ ખાલી નહીં હોવી જોઈએ</string>
+    <string name="invalid_email">કૃપા કરીને માન્ય ઈમેઈલ દાખલ કરો</string>
+    <string name="please_login_with_credentials">તમારા ઓળખપત્રો સાથે લૉગિન કરો</string>
+    <string name="login_error_msg_empty_password">પાસવર્ડ ફીલ્ડ ખાલી નહીં હોવી જોઈએ</string>
+    <string name="invalid_password_error_message">પાસવર્ડમાં ઓછામાં ઓછા 8 અક્ષરો, એક નાનું અક્ષર, એક મોટું અક્ષર, એક અંક, અને એક વિશેષ અક્ષર હોવું જોઈએ</string>
+    <string name="signup_error_msg_empty_gender">કૃપા કરીને લિંગ પસંદ કરો</string>
+    <string name="signup_error_msg_empty_dob">કૃપા કરીને જન્મતારીખ પસંદ કરો</string>
+    <string name="signup_error_msg_invalid_dob">કૃપા કરીને માન્ય જન્મતારીખ પસંદ કરો</string>
+    <string name="signup_error_msg_empty_name">નામ ફીલ્ડ ખાલી નહીં હોવી જોઈએ</string>
+    <string name="signup_error_msg_empty_last_name">છેલ્લું નામ ફીલ્ડ ખાલી ન હોઈ શકે</string>
+    <string name="signup_invalid_msg_empty_name">કૃપા કરીને પ્રથમ માન્ય નામ દાખલ કરો</string>
+    <string name="signup_invalid_msg_empty_last_name">કૃપા કરીને છેલ્લું માન્ય નામ દાખલ કરો</string>
+    <string name="signup_error_msg_mismatch_password">પાસવર્ડ મેળ ખાતો નથી</string>
+    <string name="please_enter_your_information">કૃપા કરીને તમારી માહિતી દાખલ કરો</string>
+    <string name="login_with">લૉગિન કરો</string>
+    <string name="continue_with_google">Google સાથે ચાલુ રાખો</string>
+    <string name="sign_up">નવું એકાઉન્ટ બનાવો</string>
+    <string name="forgot_password">પાસવર્ડ ભૂલી ગયા છો?</string>
+
 </resources>

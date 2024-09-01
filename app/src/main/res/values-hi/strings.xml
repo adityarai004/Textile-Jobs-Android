@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">कपड़ा नौकरियाँ</string>
+    <string name="app_name">Textile Jobs</string>
     <string name="language_of_choice">कृपया अपनी पसंद की भाषा चुनें</string>
+
+    <string name="empty_string"> </string>
+    <string name="login">लॉग इन करें</string>
+    <string name="enter_your_email">अपना ईमेल दर्ज करें</string>
+    <string name="enter_your_first_name">अपना पहला नाम दर्ज करें</string>
+    <string name="enter_your_last_name">अपना अंतिम नाम दर्ज करें</string>
+    <string name="enter_your_password">अपना पासवर्ड दर्ज करें</string>
+    <string name="confirm_your_password">अपना पासवर्ड पुष्टि करें</string>
+    <string name="icon_password_visible">पासवर्ड दिख रहा है</string>
+    <string name="icon_password_hidden">पासवर्ड छिपा हुआ है</string>
+    <string name="login_error_msg_empty_email_mobile">ईमेल फ़ील्ड खाली नहीं हो सकता</string>
+    <string name="invalid_email">कृपया एक मान्य ईमेल दर्ज करें</string>
+    <string name="please_login_with_credentials">अपने क्रेडेंशियल के साथ लॉगिन करें</string>
+    <string name="login_error_msg_empty_password">पासवर्ड फ़ील्ड खाली नहीं हो सकता</string>
+    <string name="invalid_password_error_message">पासवर्ड में कम से कम 8 अक्षर, एक छोटा अक्षर, एक बड़ा अक्षर, एक अंक, और एक विशेष अक्षर होना चाहिए</string>
+    <string name="signup_error_msg_empty_gender">कृपया एक लिंग का चयन करें</string>
+    <string name="signup_error_msg_empty_dob">कृपया एक जन्म तिथि का चयन करें</string>
+    <string name="signup_error_msg_invalid_dob">कृपया एक मान्य जन्म तिथि का चयन करें</string>
+    <string name="signup_error_msg_empty_name">नाम फ़ील्ड खाली नहीं हो सकता</string>
+    <string name="signup_error_msg_empty_last_name">अंतिम नाम फ़ील्ड खाली नहीं हो सकती</string>
+    <string name="signup_invalid_msg_empty_name">कृपया पहला वैध नाम दर्ज करें</string>
+    <string name="signup_invalid_msg_empty_last_name">कृपया अंतिम वैध नाम दर्ज करें</string>
+    <string name="signup_error_msg_mismatch_password">पासवर्ड मेल नहीं खा रहा है</string>
+    <string name="please_enter_your_information">कृपया अपनी जानकारी दर्ज करें</string>
+    <string name="login_with">लॉग इन करें</string>
+    <string name="continue_with_google">Google के साथ जारी रखें</string>
+    <string name="sign_up">नया खाता बनाएँ</string>
+    <string name="forgot_password">पासवर्ड भूल गए?</string>
+
 </resources>

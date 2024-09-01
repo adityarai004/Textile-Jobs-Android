@@ -7,3 +7,6 @@ object NavLanguageScreen
 
 @Serializable
 object NavLoginScreen
+
+@Serializable
+object NavHomeScreen

@@ -1,19 +1,29 @@
 package com.example.textilejobs.presentation.language.viewmodel
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
-import java.util.Locale
+import androidx.lifecycle.viewModelScope
+import com.example.textilejobs.core.constants.LocalPrefsConstants
+import com.example.textilejobs.domain.usecase.SetBooleanUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LanguageViewModel() : ViewModel() {
+@HiltViewModel
+class LanguageViewModel @Inject constructor(private val setBooleanUseCase: SetBooleanUseCase) : ViewModel() {
+
     var languageState by mutableStateOf(LanguageState())
         private set
+
+    private val _languageStateFlow = MutableStateFlow(LanguageState())
+    val languageStateFlow = _languageStateFlow.asStateFlow()
 
     fun onEvent(languageEvent: LanguageEvent) {
         when (languageEvent) {
@@ -22,30 +32,23 @@ class LanguageViewModel() : ViewModel() {
                     selectedLanguage = languageEvent.selectedLang
                 )
             }
-
             is LanguageEvent.OnLanguageChange -> {
-                languageState = languageState.copy(isLoading = true)
-                changeAppLanguage(languageEvent.selectLangCode)
-                languageState = languageState.copy(isLoading = false)
+                languageState = languageState.copy(
+                    isLoading = true
+                )
+                AppCompatDelegate.setApplicationLocales(
+                    LocaleListCompat.forLanguageTags(
+                        languageEvent.selectLangCode
+                    )
+                )
+                viewModelScope.launch (Dispatchers.IO){
+                    setBooleanUseCase.invoke(LocalPrefsConstants.IS_LANGUAGE_CHOSEN, true)
+                }
+                languageState = languageState.copy(
+                    isLoading = false,
+                    shouldNavigate = true
+                )
             }
         }
     }
-
-    private fun changeAppLanguage(languageCode: String) {
-        val locale = Locale(languageCode)
-//        Locale.setDefault(locale)
-
-        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("hi"))
-//        val resources = getApplication(applicationContext).resources
-//        val config = resources.configuration
-//        config.setLocale(locale)
-//        resources.updateConfiguration(config, resources.displayMetrics)
-        // Optional: You can also trigger a refresh or a LiveData event to notify the UI about the language change.
-    }
-}
-
-fun Context.findActivity() : Activity? = when(this){
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
 }
