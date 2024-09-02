@@ -10,29 +10,29 @@ data class AuthResponseDTO(
     @SerialName("message")
     val message: String,
     @SerialName("data")
-    val authData: AuthDataDTO
+    val authData: AuthDataDTO?
 )
 
 @Serializable
 data class AuthDataDTO(
     @SerialName("accessToken")
-    val accessToken: String,
+    val accessToken: String?,
     @SerialName("user")
-    val user: UserDTO
+    val user: UserDTO?
 )
 
 @Serializable
 data class UserDTO(
     @SerialName("id")
-    val id: Int,
+    val id: Int?,
     @SerialName("firstName")
-    val firstName: String,
+    val firstName: String?,
     @SerialName("lastName")
-    val lastName: String,
+    val lastName: String?,
     @SerialName("email")
-    val email: String,
+    val email: String?,
     @SerialName("avatar")
-    val profilePhoto: String,
+    val profilePhoto: String?,
     @SerialName("role")
-    val role: String
+    val role: String?
 )
