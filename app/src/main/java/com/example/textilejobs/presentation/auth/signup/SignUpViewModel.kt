@@ -152,6 +152,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
         if (!validateInputs()) {
             return
         }
+
         viewModelScope.launch {
             signUpUseCase(
                 signUpState.value.firstName,
