@@ -19,6 +19,9 @@ fun SignUpTextFields(
     modifier: Modifier = Modifier,
     firstNameValue: String,
     lastNameValue: String,
+    mobileNumber: String,
+    onMobileNumberChange: (String) -> Unit,
+    mobileErrorState: ErrorState,
     onFirstNameChange: (String) -> Unit,
     onLastNameChange: (String) -> Unit,
     firstNameErrorState: ErrorState,
@@ -69,6 +72,18 @@ fun SignUpTextFields(
             ),
             isError = lastNameErrorState.hasError,
             errorText = stringResource(lastNameErrorState.errorMessageStringResource)
+        )
+        AuthTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mobileNumber,
+            onValueChange = onMobileNumberChange,
+            label = stringResource(id = R.string.enter_your_mobile_number),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Phone,
+                imeAction = ImeAction.Next
+            ),
+            isError = mobileErrorState.hasError,
+            errorText = stringResource(mobileErrorState.errorMessageStringResource)
         )
         PasswordTextField(
             modifier = Modifier.fillMaxWidth(),

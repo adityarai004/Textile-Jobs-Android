@@ -2,7 +2,7 @@ package com.example.textilejobs.core.di
 
 import android.util.Log
 import com.example.textilejobs.core.networking.AuthService
-import com.example.trendingtimesjetpack.core.constants.NetworkConstants
+import com.example.textilejobs.core.constants.NetworkConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

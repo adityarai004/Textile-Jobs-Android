@@ -13,9 +13,20 @@ val emptyLastNameErrorState = ErrorState(
     errorMessageStringResource = R.string.signup_error_msg_empty_last_name
 )
 
+val emptyMobileNoErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.signup_error_msg_empty_last_name
+)
+
+
 val invalidFirstNameErrorState = ErrorState(
     hasError = true,
     errorMessageStringResource = R.string.signup_invalid_msg_empty_name
+)
+
+val invalidMobileNoErrorState = ErrorState(
+    hasError = true,
+    errorMessageStringResource = R.string.signup_invalid_msg_invalid_number
 )
 
 val invalidLastNameErrorState = ErrorState(

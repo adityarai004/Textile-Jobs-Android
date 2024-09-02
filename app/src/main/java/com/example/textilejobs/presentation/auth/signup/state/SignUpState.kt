@@ -7,6 +7,7 @@ data class SignUpState(
     val email: String = "",
     val firstName: String = "",
     val lastName: String = "",
+    val mobileNumber: String = "",
     val password: String = "",
     val confirmPassword: String = "",
     val isSignUpSuccessful: Boolean = false,
@@ -22,6 +23,7 @@ data class SignUpErrorState(
     val emailErrorState: ErrorState = ErrorState(),
     val firstNameErrorState: ErrorState = ErrorState(),
     val lastNameErrorState: ErrorState = ErrorState(),
+    val mobileNumberErrorState: ErrorState = ErrorState(),
     val passwordErrorState: ErrorState = ErrorState(),
     val confirmPasswordErrorState: ErrorState = ErrorState()
 )

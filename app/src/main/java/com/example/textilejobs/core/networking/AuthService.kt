@@ -1,7 +1,7 @@
 package com.example.textilejobs.core.networking
 
 import com.example.textilejobs.data.dto.auth.AuthResponseDTO
-import com.example.trendingtimesjetpack.core.constants.NetworkConstants
+import com.example.textilejobs.core.constants.NetworkConstants
 import com.example.textilejobs.data.dto.auth.LoginRequestDTO
 import com.example.textilejobs.data.dto.auth.SignUpRequestDTO
 import io.ktor.client.HttpClient

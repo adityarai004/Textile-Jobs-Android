@@ -12,9 +12,10 @@ class SignUpUseCase @Inject constructor(private val authRepository: AuthReposito
         firstName: String,
         lastName: String,
         email: String,
-        password: String
+        password: String,
+        mobileNumber: String
     ): Flow<Resource<AuthResponseDTO>> {
-        val signUpRequestDTO = SignUpRequestDTO(firstName, lastName, email, password)
+        val signUpRequestDTO = SignUpRequestDTO(firstName, lastName, email, password, "https://www.google.com", mobileNumber)
         return authRepository.signUp(signUpRequestDTO)
     }
 }

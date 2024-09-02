@@ -9,6 +9,8 @@
     <string name="enter_your_first_name">તમારું પ્રથમ નામ દાખલ કરો</string>
     <string name="enter_your_last_name">તમારું છેલ્લું નામ દાખલ કરો</string>
     <string name="enter_your_password">તમારું પાસવર્ડ દાખલ કરો</string>
+    <string name="enter_your_mobile_number">તમારો મોબાઈલ નંબર દાખલ કરો</string>
+    <string name="signup_error_msg_empty_mobile_no">મોબાઈલ નંબર ફીલ્ડ ખાલી ન હોઈ શકે</string>
     <string name="confirm_your_password">તમારા પાસવર્ડને ખાતરી કરો</string>
     <string name="icon_password_visible">પાસવર્ડ દેખાય છે</string>
     <string name="icon_password_hidden">પાસવર્ડ છુપાય છે</string>
@@ -28,7 +30,11 @@
     <string name="please_enter_your_information">કૃપા કરીને તમારી માહિતી દાખલ કરો</string>
     <string name="login_with">લૉગિન કરો</string>
     <string name="continue_with_google">Google સાથે ચાલુ રાખો</string>
-    <string name="sign_up">નવું એકાઉન્ટ બનાવો</string>
+    <string name="sign_up">તમારું ફ્રી એકાઉન્ટ બનાવો`</string>
+    <string name="already_have_an_account">પહેલેથી એકાઉન્ટ છે?</string>
     <string name="forgot_password">પાસવર્ડ ભૂલી ગયા છો?</string>
+    <string name="grant_permission_from_settings">કૃપા કરીને સેટિંગ્સમાંથી પરવાનગીઓ આપો</string>
+    <string name="account_created_successfully">એકાઉન્ટ સફળતાપૂર્વક બનાવવામાં આવ્યું, કૃપા કરીને તમારા ઓળખપત્રો સાથે લૉગિન કરો</string>
+    <string name="signup_invalid_msg_invalid_number">કૃપા કરીને માન્ય મોબાઇલ નંબર દાખલ કરો</string>
 
 </resources>

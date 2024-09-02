@@ -13,8 +13,10 @@ import com.example.textilejobs.presentation.auth.signup.state.SignUpState
 import com.example.textilejobs.presentation.auth.signup.state.SignUpUiEvent
 import com.example.textilejobs.presentation.auth.signup.state.emptyFirstNameErrorState
 import com.example.textilejobs.presentation.auth.signup.state.emptyLastNameErrorState
+import com.example.textilejobs.presentation.auth.signup.state.emptyMobileNoErrorState
 import com.example.textilejobs.presentation.auth.signup.state.invalidFirstNameErrorState
 import com.example.textilejobs.presentation.auth.signup.state.invalidLastNameErrorState
+import com.example.textilejobs.presentation.auth.signup.state.invalidMobileNoErrorState
 import com.example.textilejobs.presentation.auth.signup.state.mismatchPasswordErrorState
 import com.example.trendingtimesjetpack.core.constants.RegexConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -127,6 +129,22 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                     )
                 }
             }
+
+            is SignUpUiEvent.MobileNoChanged -> {
+                _signUpState.update { newState ->
+                    newState.copy(
+                        mobileNumber = event.newValue,
+                        errorState = signUpState.value.errorState.copy(
+                            mobileNumberErrorState = if (event.newValue.isEmpty())
+                                emptyMobileNoErrorState
+                            else if (!event.newValue.matches(Regex(RegexConstants.PHONE_REGEX)))
+                                invalidMobileNoErrorState
+                            else
+                                ErrorState()
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -140,6 +158,7 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
                 signUpState.value.lastName,
                 signUpState.value.email,
                 signUpState.value.password,
+                signUpState.value.mobileNumber
             ).collect {
                 when (it) {
                     is Resource.Error -> {
@@ -183,8 +202,69 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
     }
 
     private fun validateInputs(): Boolean {
+        val state = signUpState.value
         val errorState = signUpState.value.errorState
-        return !(errorState.emailErrorState.hasError || errorState.firstNameErrorState.hasError || errorState.passwordErrorState.hasError || errorState.confirmPasswordErrorState.hasError)
+        if (state.email.isEmpty()) {
+            _signUpState.update { newState ->
+                newState.copy(
+                    errorState = newState.errorState.copy(
+                        emailErrorState = emailEmptyErrorState
+                    )
+                )
+            }
+            return false
+        }
+        if (state.firstName.isEmpty()) {
+            _signUpState.update { newState ->
+                newState.copy(
+                    errorState = newState.errorState.copy(
+                        firstNameErrorState = emptyFirstNameErrorState
+                    )
+                )
+            }
+            return false
+        }
+        if (state.lastName.isEmpty()) {
+            _signUpState.update { newState ->
+                newState.copy(
+                    errorState = newState.errorState.copy(
+                        lastNameErrorState = emptyLastNameErrorState
+                    )
+                )
+            }
+            return false
+        }
+        if (state.mobileNumber.isEmpty()) {
+            _signUpState.update { newState ->
+                newState.copy(
+                    errorState = newState.errorState.copy(
+                        emailErrorState = emailEmptyErrorState
+                    )
+                )
+            }
+            return false
+        }
+        if (state.password.isEmpty()) {
+            _signUpState.update { newState ->
+                newState.copy(
+                    errorState = newState.errorState.copy(
+                        mobileNumberErrorState = emptyMobileNoErrorState
+                    )
+                )
+            }
+            return false
+        }
+        if (state.confirmPassword.isEmpty()) {
+            _signUpState.update { newState ->
+                newState.copy(
+                    errorState = newState.errorState.copy(
+                        confirmPasswordErrorState = passwordEmptyErrorState
+                    )
+                )
+            }
+            return false
+        }
+        return !(errorState.emailErrorState.hasError || errorState.firstNameErrorState.hasError || errorState.passwordErrorState.hasError || errorState.confirmPasswordErrorState.hasError || errorState.mobileNumberErrorState.hasError)
     }
 
     fun resetError() {

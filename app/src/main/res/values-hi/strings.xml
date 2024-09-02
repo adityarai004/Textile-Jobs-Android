@@ -28,7 +28,13 @@
     <string name="please_enter_your_information">कृपया अपनी जानकारी दर्ज करें</string>
     <string name="login_with">लॉग इन करें</string>
     <string name="continue_with_google">Google के साथ जारी रखें</string>
-    <string name="sign_up">नया खाता बनाएँ</string>
+    <string name="sign_up">अपना निःशुल्क खाता बनाएँ</string>
+    <string name="already_have_an_account">पहले से एक खाता मौजूद है?</string>
     <string name="forgot_password">पासवर्ड भूल गए?</string>
+    <string name="grant_permission_from_settings">कृपया सेटिंग्स से अनुमतियाँ प्रदान करें</string>
+    <string name="account_created_successfully">खाता सफलतापूर्वक बनाया गया, कृपया अपने क्रेडेंशियल्स के साथ लॉगिन करें</string>
+    <string name="enter_your_mobile_number">अपना मोबाइल संख्या दर्ज करे</string>
+    <string name="signup_error_msg_empty_mobile_no">मोबाइल नंबर फ़ील्ड खाली नहीं हो सकती</string>
+    <string name="signup_invalid_msg_invalid_number">कृपया एक वैध मोबाइल नंबर दर्ज करें</string>
 
 </resources>

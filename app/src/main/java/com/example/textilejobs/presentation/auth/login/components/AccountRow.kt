@@ -27,7 +27,7 @@ fun AccountRow(modifier: Modifier = Modifier, onSignUpClick: () -> Unit, onForgo
                 AnnotatedString(stringResource(id = R.string.sign_up)),
                 style = TextStyle(
                     color = Color.Black,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Black
                 ),
             )
@@ -39,7 +39,7 @@ fun AccountRow(modifier: Modifier = Modifier, onSignUpClick: () -> Unit, onForgo
                 AnnotatedString(stringResource(id = R.string.forgot_password)),
                 style = TextStyle(
                     color = Color.Black,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Black
                 ),
             )
