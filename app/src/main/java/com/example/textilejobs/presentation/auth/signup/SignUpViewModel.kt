@@ -2,6 +2,7 @@ package com.example.textilejobs.presentation.auth.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.textilejobs.core.constants.LocalPrefsConstants.PROFILE_COMPLETION_STATUS
 import com.example.textilejobs.core.utils.ErrorState
 import com.example.textilejobs.core.utils.Resource
 import com.example.textilejobs.domain.usecase.SignUpUseCase
@@ -18,8 +19,12 @@ import com.example.textilejobs.presentation.auth.signup.state.invalidFirstNameEr
 import com.example.textilejobs.presentation.auth.signup.state.invalidLastNameErrorState
 import com.example.textilejobs.presentation.auth.signup.state.invalidMobileNoErrorState
 import com.example.textilejobs.presentation.auth.signup.state.mismatchPasswordErrorState
-import com.example.trendingtimesjetpack.core.constants.RegexConstants
+import com.example.textilejobs.core.constants.RegexConstants
+import com.example.textilejobs.domain.usecase.SetIntUseCase
+import com.example.textilejobs.domain.usecase.SetStringUseCase
+import com.example.textilejobs.domain.usecase.SetUserAuthTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,7 +32,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCase) : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val signUpUseCase: SignUpUseCase,
+    private val setUserAuthTokenUseCase: SetUserAuthTokenUseCase,
+    private val setIntUseCase: SetIntUseCase
+) : ViewModel() {
     private val _signUpState = MutableStateFlow(SignUpState())
     val signUpState = _signUpState.asStateFlow()
 
@@ -182,8 +191,16 @@ class SignUpViewModel @Inject constructor(private val signUpUseCase: SignUpUseCa
 
                     is Resource.Success -> {
                         if (it.data.success) {
+                            viewModelScope.launch(Dispatchers.IO) {
+                                setUserAuthTokenUseCase(it.data.authData?.accessToken ?: "")
+                                setIntUseCase(
+                                    PROFILE_COMPLETION_STATUS,
+                                    it.data.authData?.user?.role ?: 1
+                                )
+                            }
                             _signUpState.update { newState ->
                                 newState.copy(
+                                    signUpInProgress = false,
                                     isSignUpSuccessful = true,
                                 )
                             }

@@ -12,21 +12,33 @@ import com.example.textilejobs.presentation.language.LanguageRoute
 fun NavigationService(navHostController: NavHostController, startDestination: Any) {
     NavHost(navController = navHostController, startDestination = startDestination) {
         composable<NavLanguageScreen> {
-            LanguageRoute(onNavigateToLoginScreen = { navHostController.navigate(NavLoginScreen) })
+            LanguageRoute(onNavigateToLoginScreen = { navHostController.navigate(NavLoginScreen){
+                popUpTo(NavLanguageScreen){
+                    inclusive = true
+                }
+            } })
         }
         composable<NavLoginScreen> {
             LoginRoute(
                 onNavigateToForgotPassword = {},
                 onNavigateToHome = {
                     navHostController.navigate(NavHomeScreen) {
-                        navHostController.popBackStack(it, true)
+                        popUpTo(NavLoginScreen){
+                            inclusive = true
+                        }
                     }
                 },
                 onNavigateToSignUp = { navHostController.navigate(NavSignUp) }
             )
         }
         composable<NavSignUp> {
-            SignUpRoute(onClickAlreadyHaveAccount = { navHostController.popBackStack() })
+            SignUpRoute(
+                onClickAlreadyHaveAccount = { navHostController.popBackStack() },
+                navigateToHome = {
+                    navHostController.navigate(NavHomeScreen) {
+                        navHostController.popBackStack(it.destination, true)
+                    }
+                })
         }
         composable<NavHomeScreen> {
 

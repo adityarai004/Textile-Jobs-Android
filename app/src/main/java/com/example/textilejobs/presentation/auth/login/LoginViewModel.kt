@@ -3,6 +3,7 @@ package com.example.textilejobs.presentation.auth.login
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.textilejobs.core.constants.LocalPrefsConstants.PROFILE_COMPLETION_STATUS
 import com.example.textilejobs.core.utils.ErrorState
 import com.example.textilejobs.core.utils.Resource
 import com.example.textilejobs.domain.usecase.LoginUseCase
@@ -13,7 +14,9 @@ import com.example.textilejobs.presentation.auth.login.state.LoginErrorState
 import com.example.textilejobs.presentation.auth.login.state.LoginState
 import com.example.textilejobs.presentation.auth.login.state.LoginUiEvent
 import com.example.textilejobs.presentation.auth.passwordEmptyErrorState
-import com.example.trendingtimesjetpack.core.constants.RegexConstants
+import com.example.textilejobs.core.constants.RegexConstants
+import com.example.textilejobs.domain.usecase.SetIntUseCase
+import com.example.textilejobs.domain.usecase.SetStringUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +27,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val setUserAuthTokenUseCase: SetUserAuthTokenUseCase,
+    private val setIntUseCase: SetIntUseCase
 ) : ViewModel() {
     var loginState = mutableStateOf(LoginState())
         private set
@@ -93,7 +97,8 @@ class LoginViewModel @Inject constructor(
                     is Resource.Success -> {
                         if (it.data.success) {
                             viewModelScope.launch(Dispatchers.IO) {
-                                setUserAuthTokenUseCase(it.data.message)
+                                setUserAuthTokenUseCase(it.data.authData?.accessToken ?: "")
+                                setIntUseCase(PROFILE_COMPLETION_STATUS, it.data.authData?.user?.role ?: 1)
                             }
                             loginState.value = loginState.value.copy(
                                 loginInProgress = false,

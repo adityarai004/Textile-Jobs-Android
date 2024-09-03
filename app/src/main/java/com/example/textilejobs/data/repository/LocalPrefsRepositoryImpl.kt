@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.textilejobs.core.constants.LocalPrefsConstants
 import com.example.textilejobs.domain.repository.LocalPrefsRepository
@@ -36,9 +37,20 @@ class LocalPrefsRepositoryImpl @Inject constructor(private val dataStore: DataSt
         return preferences[booleanPreferencesKey(key)] ?: false
     }
 
+    override suspend fun getInt(key: String): Int {
+        val preferences = dataStore.data.first()
+        return preferences[intPreferencesKey(key)] ?: -1
+    }
+
     override suspend fun setBool(key: String, value: Boolean) {
         dataStore.edit { prefs ->
             prefs[booleanPreferencesKey(key)] = value
+        }
+    }
+
+    override suspend fun setInt(key: String, value: Int) {
+        dataStore.edit { prefs ->
+            prefs[intPreferencesKey(key)] = value
         }
     }
 

@@ -47,6 +47,7 @@ import com.example.textilejobs.presentation.auth.signup.state.SignUpUiEvent
 @Composable
 fun SignUpRoute(
     onClickAlreadyHaveAccount: () -> Unit,
+    navigateToHome: () -> Unit,
     signUpViewModel: SignUpViewModel = hiltViewModel()
 ) {
     val signUpState by signUpViewModel.signUpState.collectAsStateWithLifecycle()
@@ -88,7 +89,7 @@ fun SignUpRoute(
                 accountCreationToast,
                 Toast.LENGTH_LONG
             ).show()
-            onClickAlreadyHaveAccount()
+            navigateToHome()
         }
         signUpViewModel.resetSuccess()
     }

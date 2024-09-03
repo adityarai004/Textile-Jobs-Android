@@ -7,6 +7,7 @@ import com.example.textilejobs.domain.usecase.GetStringUseCase
 import com.example.textilejobs.domain.usecase.GetUserAuthKeyUseCase
 import com.example.textilejobs.domain.usecase.LoginUseCase
 import com.example.textilejobs.domain.usecase.SetBooleanUseCase
+import com.example.textilejobs.domain.usecase.SetIntUseCase
 import com.example.textilejobs.domain.usecase.SetStringUseCase
 import com.example.textilejobs.domain.usecase.SetUserAuthTokenUseCase
 import com.example.textilejobs.domain.usecase.SignUpUseCase
@@ -59,4 +60,9 @@ object UseCaseModule {
     @Singleton
     fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase =
         SignUpUseCase(authRepository)
+
+    @Provides
+    @Singleton
+    fun provideSetIntUseCase(localPrefsRepository: LocalPrefsRepository): SetIntUseCase =
+        SetIntUseCase(localPrefsRepository)
 }

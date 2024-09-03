@@ -1,4 +1,4 @@
-package com.example.trendingtimesjetpack.core.constants
+package com.example.textilejobs.core.constants
 
 object RegexConstants {
     const val EMAIL_REGEX = "^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$"

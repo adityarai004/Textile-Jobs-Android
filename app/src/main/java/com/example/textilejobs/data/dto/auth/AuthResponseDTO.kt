@@ -34,5 +34,7 @@ data class UserDTO(
     @SerialName("avatar")
     val profilePhoto: String?,
     @SerialName("role")
-    val role: String?
+    val role: Int?,
+    @SerialName("isActive")
+    val isActive: Boolean?
 )
