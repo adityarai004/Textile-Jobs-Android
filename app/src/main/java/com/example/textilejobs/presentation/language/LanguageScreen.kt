@@ -18,6 +18,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.LocaleListCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.textilejobs.R
 import com.example.textilejobs.core.ui.TJCircularProgress
@@ -40,19 +42,18 @@ import com.example.textilejobs.presentation.language.viewmodel.LanguageViewModel
 
 
 @Composable
-fun LanguageRoute(languageViewModel: LanguageViewModel = viewModel(), onNavigateToLoginScreen :() -> Unit) {
+fun LanguageRoute(languageViewModel: LanguageViewModel = hiltViewModel(), onNavigateToLoginScreen :() -> Unit) {
     LanguagePickerScreen(modifier = Modifier.fillMaxSize(),
         languageState = languageViewModel.languageState,
         onLanguageChange = { languageViewModel.onEvent(LanguageEvent.OnSelectionChange(it)) },
-        onLanguageChoose = {
-            AppCompatDelegate.setApplicationLocales(
-                LocaleListCompat.forLanguageTags(
-                    it
-                )
-            )
+        onLanguageChoose = { languageViewModel.onEvent(LanguageEvent.OnLanguageChange(it)) }
+    )
+
+    LaunchedEffect(key1 = languageViewModel.languageState.isLoading) {
+        if(languageViewModel.languageState.shouldNavigate){
             onNavigateToLoginScreen()
         }
-    )
+    }
 }
 
 @Composable
