@@ -116,31 +116,25 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun validateInput(email: String, password: String): Boolean {
-        return when {
-            email.isEmpty() -> {
-                loginState.value = loginState.value.copy(
-                    errorState = LoginErrorState(
-                        emailOrMobileErrorState = emailEmptyErrorState
-                    )
-                )
-                false
-            }
 
-            password.isEmpty() -> {
-                loginState.value = loginState.value.copy(
-                    errorState = LoginErrorState(
-                        passwordErrorState = passwordEmptyErrorState
-                    )
+        if(email.isEmpty()) {
+            loginState.value = loginState.value.copy(
+                errorState = LoginErrorState(
+                    emailOrMobileErrorState = emailEmptyErrorState
                 )
-                false
-            }
-
-            // No errors
-            else -> {
-                // Set default error state
-                loginState.value = loginState.value.copy(errorState = LoginErrorState())
-                true
-            }
+            )
+            return false
         }
+
+        if(password.isEmpty() ) {
+            loginState.value = loginState.value.copy(
+                errorState = LoginErrorState(
+                    passwordErrorState = passwordEmptyErrorState
+                )
+            )
+            return false
+        }
+
+        return !(loginState.value.errorState.passwordErrorState.hasError || loginState.value.errorState.emailOrMobileErrorState.hasError)
     }
 }
