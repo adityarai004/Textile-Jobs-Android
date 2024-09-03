@@ -23,13 +23,25 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = "textilejobs"
+            keyPassword = "t3xtil3j0b5"
+            storeFile = file("textilejobs.jks")
+            storePassword = "t3xtil3j0b5"
+        }
+    }
+
+
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+            isDebuggable = false
         }
     }
     compileOptions {
