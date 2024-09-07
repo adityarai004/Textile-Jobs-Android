@@ -11,6 +11,8 @@ data class LoginState(
     val loginInProgress: Boolean = false,
     val isLoginError: Boolean = false,
     val loginErrorString: String = "",
+    val continueWithGoogleInProgress: Boolean = false,
+    val continueWithGoogleError: Boolean = false
 )
 
 data class LoginErrorState(

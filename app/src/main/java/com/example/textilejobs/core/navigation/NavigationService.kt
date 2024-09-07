@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.textilejobs.presentation.auth.login.LoginRoute
 import com.example.textilejobs.presentation.auth.signup.SignUpRoute
+import com.example.textilejobs.presentation.dashboard.DashboardRoute
 import com.example.textilejobs.presentation.language.LanguageRoute
 
 @Composable
@@ -22,7 +23,7 @@ fun NavigationService(navHostController: NavHostController, startDestination: An
             LoginRoute(
                 onNavigateToForgotPassword = {},
                 onNavigateToHome = {
-                    navHostController.navigate(NavHomeScreen) {
+                    navHostController.navigate(NavDashboardScreen) {
                         popUpTo(NavLoginScreen){
                             inclusive = true
                         }
@@ -35,13 +36,13 @@ fun NavigationService(navHostController: NavHostController, startDestination: An
             SignUpRoute(
                 onClickAlreadyHaveAccount = { navHostController.popBackStack() },
                 navigateToHome = {
-                    navHostController.navigate(NavHomeScreen) {
+                    navHostController.navigate(NavDashboardScreen) {
                         navHostController.popBackStack(it.destination, true)
                     }
                 })
         }
-        composable<NavHomeScreen> {
-
+        composable<NavDashboardScreen> {
+            DashboardRoute(navController = navHostController)
         }
 
         composable<NavForgotPassword> {

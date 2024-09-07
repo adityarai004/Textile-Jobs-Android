@@ -1,6 +1,8 @@
 package com.example.textilejobs.core.di
 
 import android.content.Context
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
@@ -23,13 +25,15 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepository(authService: AuthService): AuthRepository {
+    fun provideAuthRepository(
+        authService: AuthService,
+    ): AuthRepository {
         return AuthRepositoryImpl(authService)
     }
 
     @Provides
     @Singleton
-    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences>{
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create {
             context.preferencesDataStoreFile("textile_jobs_prefs")
         }
@@ -37,7 +41,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideLocalRepository(dataStore: DataStore<Preferences>): LocalPrefsRepository{
+    fun provideLocalRepository(dataStore: DataStore<Preferences>): LocalPrefsRepository {
         return LocalPrefsRepositoryImpl(dataStore)
     }
 }

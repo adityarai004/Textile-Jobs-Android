@@ -36,5 +36,6 @@
     <string name="enter_your_mobile_number">अपना मोबाइल संख्या दर्ज करे</string>
     <string name="signup_error_msg_empty_mobile_no">मोबाइल नंबर फ़ील्ड खाली नहीं हो सकती</string>
     <string name="signup_invalid_msg_invalid_number">कृपया एक वैध मोबाइल नंबर दर्ज करें</string>
+    <string name="failed_to_continue_with_google">हम इस समय Google साइन इन संसाधित करने में असमर्थ हैं</string>
 
 </resources>

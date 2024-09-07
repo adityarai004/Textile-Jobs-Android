@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
+import com.example.textilejobs.core.navigation.NavDashboardScreen
 import com.example.textilejobs.core.navigation.NavHomeScreen
 import com.example.textilejobs.core.navigation.NavLanguageScreen
 import com.example.textilejobs.core.navigation.NavLoginScreen
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             TextileJobsTheme {
                 if (!isLoading.value) {
                     val startDestination: Any =
-                        if (isLoggedIn.value) NavHomeScreen else if (!isLanguageChosen.value) NavLanguageScreen else NavLoginScreen
+                        if (isLoggedIn.value) NavDashboardScreen else if (!isLanguageChosen.value) NavLanguageScreen else NavLoginScreen
                     NavigationService(navHostController, startDestination)
                 }
             }

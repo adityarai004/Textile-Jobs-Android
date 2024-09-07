@@ -12,6 +12,15 @@ object NavLoginScreen
 object NavHomeScreen
 
 @Serializable
+object NavStatusScreen
+
+@Serializable
+object NavProfileScreen
+
+@Serializable
+object NavDashboardScreen
+
+@Serializable
 object NavSignUp
 
 @Serializable

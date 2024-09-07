@@ -29,4 +29,13 @@ class AuthService @Inject constructor(private val client: HttpClient) {
         }.body<AuthResponseDTO>()
         return response
     }
+
+    suspend fun continueWithGoogle(googleAuthId: String): AuthResponseDTO {
+        val response = client.post(NetworkConstants.CONTINUE_WITH_GOOGLE){
+            setBody(
+                "auth-id" to googleAuthId
+            )
+        }.body<AuthResponseDTO>()
+        return response
+    }
 }

@@ -10,6 +10,7 @@ import com.example.textilejobs.domain.usecase.SetBooleanUseCase
 import com.example.textilejobs.domain.usecase.SetIntUseCase
 import com.example.textilejobs.domain.usecase.SetStringUseCase
 import com.example.textilejobs.domain.usecase.SetUserAuthTokenUseCase
+import com.example.textilejobs.domain.usecase.SignInWithGoogleUseCase
 import com.example.textilejobs.domain.usecase.SignUpUseCase
 import dagger.Module
 import dagger.Provides
@@ -65,4 +66,9 @@ object UseCaseModule {
     @Singleton
     fun provideSetIntUseCase(localPrefsRepository: LocalPrefsRepository): SetIntUseCase =
         SetIntUseCase(localPrefsRepository)
+
+    @Provides
+    @Singleton
+    fun providerSignInWithGoogleUseCase(authRepository: AuthRepository): SignInWithGoogleUseCase =
+        SignInWithGoogleUseCase(authRepository)
 }
