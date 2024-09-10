@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.textilejobs.R
+import com.example.textilejobs.core.desginsystem.TjIcons
 
 @Composable
 fun ImagePicker(modifier: Modifier = Modifier, filePath: Uri?, onClickUpload: () -> Unit) {
@@ -43,7 +44,7 @@ fun ImagePicker(modifier: Modifier = Modifier, filePath: Uri?, onClickUpload: ()
                     .padding(end = 8.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Edit,
+                    imageVector = TjIcons.edit,
                     contentDescription = "Upload Image",
                     modifier = Modifier
                         .size(32.dp)

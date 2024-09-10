@@ -1,10 +1,6 @@
 package com.example.textilejobs.data.repository
 
-import android.content.Context
-import androidx.credentials.CredentialManager
-import androidx.credentials.GetCredentialRequest
-import androidx.credentials.GetCredentialResponse
-import com.example.textilejobs.core.networking.AuthService
+import com.example.textilejobs.data.datasources.AuthService
 import com.example.textilejobs.data.dto.auth.AuthResponseDTO
 import com.example.textilejobs.core.utils.Resource
 import com.example.textilejobs.data.dto.auth.LoginRequestDTO
@@ -23,7 +19,11 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Resource.Loading)
             try {
                 val response = authService.login(loginRequestDTO)
-                emit(Resource.Success(response))
+                if (response.success == true) {
+                    emit(Resource.Success(response))
+                } else {
+                    emit(Resource.Error(response.message ?: "An error occurred while login"))
+                }
             } catch (e: Exception) {
                 emit(Resource.Error(e.message ?: "An error occurred while login"))
             }
@@ -34,20 +34,28 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Resource.Loading)
             try {
                 val response = authService.signup(signUpRequestDTO)
-                emit(Resource.Success(response))
+                if (response.success == true) {
+                    emit(Resource.Success(response))
+                } else {
+                    emit(Resource.Error(response.message ?: "An error occurred while sign up"))
+                }
             } catch (e: Exception) {
-                emit(Resource.Error(e.message ?: "An error occurred while sign up"))
+                emit(Resource.Error(e.localizedMessage ?: "An error occurred while sign up"))
             }
         }
 
-    override suspend fun continueWithGoogle(googleAuthId: String): Flow<Resource<AuthResponseDTO>> {
+    override suspend fun continueWithGoogle(googleAuthId: String, role: Int): Flow<Resource<AuthResponseDTO>> {
         return flow {
             emit(Resource.Loading)
             try {
-                val response = authService.continueWithGoogle(googleAuthId)
-                emit(Resource.Success(response))
+                val response = authService.continueWithGoogle(googleAuthId,role)
+                if (response.success == true) {
+                    emit(Resource.Success(response))
+                } else {
+                    emit(Resource.Error(response.message ?: "An error occurred while login"))
+                }
             } catch (e: Exception) {
-                emit(Resource.Error(e.message ?: "An error occurred while google Sign In"))
+                emit(Resource.Error(e.localizedMessage ?: "An error occurred while google Sign In"))
             }
         }
     }

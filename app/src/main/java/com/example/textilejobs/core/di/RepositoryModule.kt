@@ -1,13 +1,11 @@
 package com.example.textilejobs.core.di
 
 import android.content.Context
-import androidx.credentials.CredentialManager
-import androidx.credentials.GetCredentialRequest
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.example.textilejobs.core.networking.AuthService
+import com.example.textilejobs.data.datasources.AuthService
 import com.example.textilejobs.data.repository.AuthRepositoryImpl
 import com.example.textilejobs.data.repository.LocalPrefsRepositoryImpl
 import com.example.textilejobs.domain.repository.AuthRepository

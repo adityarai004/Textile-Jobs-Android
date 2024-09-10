@@ -5,8 +5,7 @@ import com.example.textilejobs.core.utils.ErrorState
 
 data class SignUpState(
     val email: String = "",
-    val firstName: String = "",
-    val lastName: String = "",
+    val name: String = "",
     val mobileNumber: String = "",
     val password: String = "",
     val confirmPassword: String = "",

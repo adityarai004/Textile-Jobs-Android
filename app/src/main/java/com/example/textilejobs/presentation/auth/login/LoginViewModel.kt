@@ -27,6 +27,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.log
 
 
 @HiltViewModel
@@ -76,7 +77,9 @@ class LoginViewModel @Inject constructor(
 
             is LoginUiEvent.GoogleSignInTap -> {
                 loginState.value = loginState.value.copy(
-                    continueWithGoogleInProgress = (!loginState.value.continueWithGoogleInProgress)
+                    dialogState = loginState.value.dialogState.copy(
+                        showDialog = true
+                    )
                 )
             }
 
@@ -95,6 +98,32 @@ class LoginViewModel @Inject constructor(
                     continueWithGoogleInProgress = false
                 )
             }
+
+            LoginUiEvent.DialogDismiss -> {
+                loginState.value = loginState.value.copy(
+                    continueWithGoogleInProgress = false,
+                    dialogState = loginState.value.dialogState.copy(
+                        showDialog = false
+                    )
+                )
+            }
+
+            is LoginUiEvent.OnDialogSelectionChange -> {
+                loginState.value = loginState.value.copy(
+                    dialogState = loginState.value.dialogState.copy(
+                        selectedUserType = loginUiEvent.newSelection
+                    )
+                )
+            }
+
+            LoginUiEvent.DialogSubmit -> {
+                loginState.value = loginState.value.copy(
+                    continueWithGoogleInProgress = true,
+                    dialogState = loginState.value.dialogState.copy(
+                        showDialog = false
+                    )
+                )
+            }
         }
     }
 
@@ -106,11 +135,14 @@ class LoginViewModel @Inject constructor(
                         val googleIdTokenCredential =
                             GoogleIdTokenCredential.createFrom(credential.data)
                         Log.i("TAG", "handleSignIn: ${googleIdTokenCredential.idToken}")
+                        val role = if (loginState.value.dialogState.selectedUserType == 0) 1 else 3
                         viewModelScope.launch(Dispatchers.IO) {
-                            signInWithGoogleUseCase.invoke(googleIdTokenCredential.idToken)
-                                .collect {
-                                    handleLoginProgress(it)
-                                }
+                            signInWithGoogleUseCase.invoke(
+                                googleIdTokenCredential.idToken,
+                                role
+                            ).collect {
+                                handleLoginProgress(it)
+                            }
                         }
                     } catch (e: GoogleIdTokenParsingException) {
                         loginState.value = loginState.value.copy(
@@ -150,8 +182,8 @@ class LoginViewModel @Inject constructor(
 
     private fun callLoginApi(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            loginUseCase.invoke(email, password).collect {
-
+            loginUseCase(email, password).collect {
+                handleLoginProgress(it)
             }
         }
     }
@@ -193,12 +225,12 @@ class LoginViewModel @Inject constructor(
             }
 
             is Resource.Success -> {
-                if (resource.data.success) {
+                if (resource.data.success == true) {
                     viewModelScope.launch(Dispatchers.IO) {
                         setUserAuthTokenUseCase(resource.data.authData?.accessToken ?: "")
                         setIntUseCase(
                             PROFILE_COMPLETION_STATUS,
-                            resource.data.authData?.user?.role ?: 1
+                            resource.data.authData?.user?.role ?: 3
                         )
                     }
                     loginState.value = loginState.value.copy(
@@ -211,7 +243,7 @@ class LoginViewModel @Inject constructor(
                     loginState.value = loginState.value.copy(
                         loginInProgress = false,
                         isLoginError = true,
-                        loginErrorString = resource.data.message,
+                        loginErrorString = resource.data.message ?: "Something Went Wrong",
                         isLoginSuccessful = false
                     )
                 }

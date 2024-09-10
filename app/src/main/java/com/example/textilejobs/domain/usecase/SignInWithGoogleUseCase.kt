@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class SignInWithGoogleUseCase @Inject constructor(private val authRepository: AuthRepository) {
-    suspend operator fun invoke(googleAuthId: String): Flow<Resource<AuthResponseDTO>> {
-        return authRepository.continueWithGoogle(googleAuthId);
+    suspend operator fun invoke(googleAuthId: String, role: Int): Flow<Resource<AuthResponseDTO>> {
+        return authRepository.continueWithGoogle(googleAuthId,role);
     }
 }

@@ -1,5 +1,8 @@
-package com.example.textilejobs.presentation.dashboard
+package com.example.textilejobs.presentation.dashboard.viewmodel
 
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -17,8 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel;
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,11 +33,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.textilejobs.core.navigation.NavHomeScreen
 import com.example.textilejobs.core.navigation.NavProfileScreen
 import com.example.textilejobs.core.navigation.NavStatusScreen
+import com.example.textilejobs.presentation.dashboard.DashboardViewModel
 
 @Composable
 fun DashboardRoute(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
+    navController: NavController,
     viewModel: DashboardViewModel = viewModel()
 ) {
     val dashboardState by viewModel.dashboardState.collectAsStateWithLifecycle()
@@ -45,10 +51,9 @@ fun DashboardRoute(
 
 @Composable
 fun DashboardScreen(
-    modifier: Modifier = Modifier,
     dashboardState: DashboardState,
     onChangeScreen: (Int) -> Unit,
-    navController: NavHostController
+    navController: NavController
 ) {
     Scaffold(
         bottomBar = {
@@ -71,18 +76,18 @@ fun DashboardScreen(
                         }
                     IconButton(onClick = {
                         onChangeScreen(dashboardState.screen.indexOf(it))
-//                        navController.navigate(it.route) {
-//                            popUpTo(navController.graph.findStartDestination().id) {
-//                                saveState = true
-//                            }
-//                            // Avoid multiple copies of the same destination when
-//                            // reselecting the same item
-//                            launchSingleTop = true
-//                            // Restore state when reselecting a previously selected item
-//                            restoreState = true
-//                        }
-
-                    }) {
+                        navController.navigate(it.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
+                    },
+                        modifier = Modifier.padding(12.dp)) {
                         Icon(
                             imageVector = it.selectedIcon,
                             contentDescription = "",
@@ -94,21 +99,27 @@ fun DashboardScreen(
             }
         }
     ) { innerPadding ->
-//       NavHost(
-//            navController = navController,
-//            startDestination = NavHomeScreen,
-//            modifier = Modifier.padding(innerPadding)
-//        ) {
-//            composable<NavHomeScreen> {
-//                Text(text = "Home Screen")
-//            }
-//            composable<NavStatusScreen> {
-//                Text(text = "Status Screen")
-//            }
-//            composable<NavProfileScreen> {
-//                Text(text = "Profile Screen")
-//            }
-//        }
+       NavHost(
+            navController = navController as NavHostController,
+            startDestination = NavHomeScreen,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable<NavHomeScreen>(
+                enterTransition = {
+                    slideIn(tween(durationMillis = 100, easing = FastOutLinearInEasing)){ fullSize ->
+                        IntOffset(fullSize.width / 4, 100)
+                    }
+                }
+            ) {
+                Text(text = "Home Screen")
+            }
+            composable<NavStatusScreen> {
+                Text(text = "Status Screen")
+            }
+            composable<NavProfileScreen> {
+                Text(text = "Profile Screen")
+            }
+        }
     }
 }
 

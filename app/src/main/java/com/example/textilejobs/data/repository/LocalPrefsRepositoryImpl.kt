@@ -1,6 +1,8 @@
 package com.example.textilejobs.data.repository
 
+import android.util.Log
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.IOException
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -15,31 +17,55 @@ class LocalPrefsRepositoryImpl @Inject constructor(private val dataStore: DataSt
     LocalPrefsRepository {
 
     override suspend fun setUserAuthKey(authKey: String) {
-        dataStore.edit { prefs ->
-            prefs[stringPreferencesKey(LocalPrefsConstants.USER_TOKEN)] = authKey
-            prefs[booleanPreferencesKey(LocalPrefsConstants.USER_IS_LOGGED_IN)] = true
+        try {
+            dataStore.edit { prefs ->
+                prefs[stringPreferencesKey(LocalPrefsConstants.USER_TOKEN)] = authKey
+                prefs[booleanPreferencesKey(LocalPrefsConstants.USER_IS_LOGGED_IN)] = true
+            }
+        } catch (ioException: IOException) {
+            Log.e("TjPreferences", "Failed to update user preferences", ioException)
         }
     }
 
     override suspend fun getUserAuthKey(): String {
-        val preferences = dataStore.data.first()
-        return preferences[stringPreferencesKey(LocalPrefsConstants.USER_TOKEN)] ?: ""
+        try {
+            val preferences = dataStore.data.first()
+            return preferences[stringPreferencesKey(LocalPrefsConstants.USER_TOKEN)] ?: ""
+        } catch (ioException: IOException) {
+            Log.e("TjPreferences", "Failed to update user preferences", ioException)
+            return ""
+        }
     }
 
     override suspend fun getString(key: String): String {
-        val preferences = dataStore.data.first()
-        return preferences[stringPreferencesKey(key)] ?: ""
+        try {
+            val preferences = dataStore.data.first()
+            return preferences[stringPreferencesKey(key)] ?: ""
+        } catch (ioException: IOException) {
+            Log.e("TjPreferences", "Failed to update user preferences", ioException)
+            return ""
+        }
 
     }
 
     override suspend fun getBoolean(key: String): Boolean {
-        val preferences = dataStore.data.first()
-        return preferences[booleanPreferencesKey(key)] ?: false
+        try {
+            val preferences = dataStore.data.first()
+            return preferences[booleanPreferencesKey(key)] ?: false
+        } catch (ioException: IOException) {
+            Log.e("TjPreferences", "Failed to update user preferences", ioException)
+            return false
+        }
     }
 
     override suspend fun getInt(key: String): Int {
-        val preferences = dataStore.data.first()
-        return preferences[intPreferencesKey(key)] ?: -1
+        try {
+            val preferences = dataStore.data.first()
+            return preferences[intPreferencesKey(key)] ?: -1
+        } catch (ioException: IOException) {
+            Log.e("TjPreferences", "Failed to update user preferences", ioException)
+            return -1
+        }
     }
 
     override suspend fun setBool(key: String, value: Boolean) {
@@ -49,14 +75,22 @@ class LocalPrefsRepositoryImpl @Inject constructor(private val dataStore: DataSt
     }
 
     override suspend fun setInt(key: String, value: Int) {
-        dataStore.edit { prefs ->
-            prefs[intPreferencesKey(key)] = value
+        try {
+            dataStore.edit { prefs ->
+                prefs[intPreferencesKey(key)] = value
+            }
+        } catch (ioException: IOException) {
+            Log.e("TjPreferences", "Failed to update user preferences", ioException)
         }
     }
 
     override suspend fun setString(key: String, value: String) {
-        dataStore.edit { prefs ->
-            prefs[stringPreferencesKey(key)] = value
+        try {
+            dataStore.edit { prefs ->
+                prefs[stringPreferencesKey(key)] = value
+            }
+        } catch (ioException: IOException) {
+            Log.e("TjPreferences", "Failed to update user preferences", ioException)
         }
     }
 }

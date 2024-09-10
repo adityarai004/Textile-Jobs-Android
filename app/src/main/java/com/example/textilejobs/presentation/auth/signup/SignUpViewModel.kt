@@ -13,15 +13,12 @@ import com.example.textilejobs.presentation.auth.passwordEmptyErrorState
 import com.example.textilejobs.presentation.auth.signup.state.SignUpState
 import com.example.textilejobs.presentation.auth.signup.state.SignUpUiEvent
 import com.example.textilejobs.presentation.auth.signup.state.emptyFirstNameErrorState
-import com.example.textilejobs.presentation.auth.signup.state.emptyLastNameErrorState
 import com.example.textilejobs.presentation.auth.signup.state.emptyMobileNoErrorState
 import com.example.textilejobs.presentation.auth.signup.state.invalidFirstNameErrorState
-import com.example.textilejobs.presentation.auth.signup.state.invalidLastNameErrorState
 import com.example.textilejobs.presentation.auth.signup.state.invalidMobileNoErrorState
 import com.example.textilejobs.presentation.auth.signup.state.mismatchPasswordErrorState
 import com.example.textilejobs.core.constants.RegexConstants
 import com.example.textilejobs.domain.usecase.SetIntUseCase
-import com.example.textilejobs.domain.usecase.SetStringUseCase
 import com.example.textilejobs.domain.usecase.SetUserAuthTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +42,7 @@ class SignUpViewModel @Inject constructor(
             is SignUpUiEvent.FirstNameChanged -> {
                 _signUpState.update { newState ->
                     newState.copy(
-                        firstName = event.newValue,
+                        name = event.newValue,
                         errorState = signUpState.value.errorState.copy(
                             firstNameErrorState = if (event.newValue.isEmpty())
                                 emptyFirstNameErrorState
@@ -109,12 +106,6 @@ class SignUpViewModel @Inject constructor(
                 }
             }
 
-
-            SignUpUiEvent.SignUpClick -> {
-                signUpApiCall()
-            }
-
-
             is SignUpUiEvent.PickedImage -> {
                 _signUpState.update { newState ->
                     newState.copy(
@@ -122,23 +113,6 @@ class SignUpViewModel @Inject constructor(
                     )
                 }
             }
-
-            is SignUpUiEvent.LastNameChanged -> {
-                _signUpState.update { newState ->
-                    newState.copy(
-                        lastName = event.newValue,
-                        errorState = signUpState.value.errorState.copy(
-                            lastNameErrorState = if (event.newValue.isEmpty())
-                                emptyLastNameErrorState
-                            else if (!event.newValue.matches(Regex(RegexConstants.NAME_REGEX)))
-                                invalidLastNameErrorState
-                            else
-                                ErrorState()
-                        )
-                    )
-                }
-            }
-
             is SignUpUiEvent.MobileNoChanged -> {
                 _signUpState.update { newState ->
                     newState.copy(
@@ -154,21 +128,25 @@ class SignUpViewModel @Inject constructor(
                     )
                 }
             }
+
+            is SignUpUiEvent.SignUpClick -> {
+                signUpApiCall(isCompany = event.isCompany)
+            }
         }
     }
 
-    private fun signUpApiCall() {
+    private fun signUpApiCall(isCompany: Boolean) {
         if (!validateInputs()) {
             return
         }
 
         viewModelScope.launch {
             signUpUseCase(
-                signUpState.value.firstName,
-                signUpState.value.lastName,
+                signUpState.value.name,
                 signUpState.value.email,
                 signUpState.value.password,
-                signUpState.value.mobileNumber
+                signUpState.value.mobileNumber,
+                if (isCompany) 3 else 1
             ).collect {
                 when (it) {
                     is Resource.Error -> {
@@ -190,7 +168,7 @@ class SignUpViewModel @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        if (it.data.success) {
+                        if (it.data.success == true) {
                             viewModelScope.launch(Dispatchers.IO) {
                                 setUserAuthTokenUseCase(it.data.authData?.accessToken ?: "")
                                 setIntUseCase(
@@ -209,7 +187,7 @@ class SignUpViewModel @Inject constructor(
                                 newState.copy(
                                     signUpInProgress = false,
                                     isSignUpError = true,
-                                    signUpErrorString = it.data.message
+                                    signUpErrorString = it.data.message ?: "Something Went Wrong"
                                 )
                             }
                         }
@@ -232,21 +210,11 @@ class SignUpViewModel @Inject constructor(
             }
             return false
         }
-        if (state.firstName.isEmpty()) {
+        if (state.name.isEmpty()) {
             _signUpState.update { newState ->
                 newState.copy(
                     errorState = newState.errorState.copy(
                         firstNameErrorState = emptyFirstNameErrorState
-                    )
-                )
-            }
-            return false
-        }
-        if (state.lastName.isEmpty()) {
-            _signUpState.update { newState ->
-                newState.copy(
-                    errorState = newState.errorState.copy(
-                        lastNameErrorState = emptyLastNameErrorState
                     )
                 )
             }

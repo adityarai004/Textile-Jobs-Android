@@ -1,6 +1,5 @@
 package com.example.textilejobs.presentation.language
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,11 +29,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.LocaleListCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.textilejobs.R
-import com.example.textilejobs.core.ui.TJCircularProgress
+import com.example.textilejobs.core.desginsystem.TJCircularProgress
 import com.example.textilejobs.presentation.language.components.LanguageGridCell
 import com.example.textilejobs.presentation.language.viewmodel.LanguageEvent
 import com.example.textilejobs.presentation.language.viewmodel.LanguageState

@@ -31,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,14 +49,18 @@ import androidx.compose.ui.unit.sp
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.textilejobs.R
 import com.example.textilejobs.core.constants.NetworkConstants
-import com.example.textilejobs.core.ui.TJCircularProgress
+import com.example.textilejobs.core.desginsystem.TJCircularProgress
+import com.example.textilejobs.presentation.auth.AuthViewModel
 import com.example.textilejobs.presentation.auth.components.AuthTextField
 import com.example.textilejobs.presentation.auth.components.CustomButton
 import com.example.textilejobs.presentation.auth.components.MediumTitleText
 import com.example.textilejobs.presentation.auth.components.PasswordTextField
 import com.example.textilejobs.presentation.auth.login.components.AccountRow
+import com.example.textilejobs.presentation.auth.login.components.DescribeYourselfDialog
+import com.example.textilejobs.presentation.auth.login.state.DialogState
 import com.example.textilejobs.presentation.auth.login.state.LoginState
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import kotlinx.coroutines.Dispatchers
@@ -64,6 +69,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginRoute(
     loginViewModel: LoginViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel,
     onNavigateToHome: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     onNavigateToForgotPassword: () -> Unit
@@ -89,7 +95,9 @@ fun LoginRoute(
             onNavigateToHome()
         }
     }
+
     LaunchedEffect(loginState.continueWithGoogleInProgress) {
+
         if (loginState.continueWithGoogleInProgress) {
             val signInWithGoogleOption: GetSignInWithGoogleOption =
                 GetSignInWithGoogleOption.Builder(NetworkConstants.WEB_CLIENT_ID)
@@ -109,10 +117,10 @@ fun LoginRoute(
                     loginViewModel.onUiEvent(loginUiEvent = LoginUiEvent.HandleGoogleAuth(result))
                 } catch (e: GetCredentialCancellationException) {
                     loginViewModel.onUiEvent(LoginUiEvent.GoogleSignInFailed)
-                    Log.e("GoogleSignIn","Failed Google Sign In due to $e")
-                } catch (e: Exception){
+                    Log.e("GoogleSignIn", "Failed Google Sign In due to $e")
+                } catch (e: Exception) {
                     loginViewModel.onUiEvent(LoginUiEvent.GoogleSignInFailed)
-                    Log.e("GoogleSignIn","Failed Google Sign In due to $e")
+                    Log.e("GoogleSignIn", "Failed Google Sign In due to $e")
                 }
             }
         }
@@ -122,7 +130,8 @@ fun LoginRoute(
         Box(modifier = Modifier.padding(innerPadding)) {
             Column(modifier = Modifier.verticalScroll(state)) {
                 MainScreen(
-                    loginState = loginState, onEmailChange = { inputString ->
+                    loginState = loginState,
+                    onEmailChange = { inputString ->
                         loginViewModel.onUiEvent(
                             loginUiEvent = LoginUiEvent.EmailChanged(
                                 inputString
@@ -135,10 +144,26 @@ fun LoginRoute(
                     onSubmit = {
                         loginViewModel.onUiEvent(LoginUiEvent.Submit)
                     },
-                    onSignUpClick = onNavigateToSignUp,
+                    onSignUpClick = {
+                        authViewModel.changeIsCompany(false)
+                        onNavigateToSignUp()
+                    },
                     onForgotPasswordClick = onNavigateToForgotPassword,
                     onContinueWithGoogleClick = {
                         loginViewModel.onUiEvent(LoginUiEvent.GoogleSignInTap)
+                    },
+                    onDialogDismiss = {
+                        loginViewModel.onUiEvent(LoginUiEvent.DialogDismiss)
+                    },
+                    onDialogSelectionChange = {
+                        loginViewModel.onUiEvent(LoginUiEvent.OnDialogSelectionChange(it))
+                    },
+                    onDialogSubmit = {
+                        loginViewModel.onUiEvent(LoginUiEvent.DialogSubmit)
+                    },
+                    registerCompanyClick = {
+                        authViewModel.changeIsCompany(true)
+                        onNavigateToSignUp()
                     }
                 )
             }
@@ -157,8 +182,18 @@ private fun MainScreen(
     onSignUpClick: () -> Unit,
     onForgotPasswordClick: () -> Unit,
     onSubmit: () -> Unit,
-    onContinueWithGoogleClick: () -> Unit
+    onContinueWithGoogleClick: () -> Unit,
+    onDialogSubmit: () -> Unit,
+    onDialogSelectionChange: (Int) -> Unit,
+    onDialogDismiss: () -> Unit,
+    registerCompanyClick: () -> Unit
 ) {
+    DescribeYourselfDialog(
+        dialogState = loginState.dialogState,
+        onDismiss = onDialogDismiss,
+        onSubmit = onDialogSubmit,
+        onSelectionChange = onDialogSelectionChange
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -258,12 +293,26 @@ private fun MainScreen(
             CustomButton(
                 onClick = onSubmit,
                 text = stringResource(id = R.string.login),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                containerColor = R.color.success_green
             )
             AccountRow(
                 modifier = Modifier.fillMaxWidth(),
                 onSignUpClick = onSignUpClick,
                 onForgotPasswordClick = onForgotPasswordClick
+            )
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
+                thickness = 2.dp
+            )
+            CustomButton(
+                onClick = registerCompanyClick,
+                text = stringResource(id = R.string.company_registration),
+                modifier = Modifier.fillMaxWidth(),
+                containerColor = R.color.purple_700,
+                fontColor = Color.White
             )
         }
     }
@@ -276,9 +325,15 @@ private fun LoginScreenPrev() {
         onPasswordChange = {},
         onSubmit = {},
         onEmailChange = {},
-        loginState = LoginState(),
+        loginState = LoginState(
+            dialogState = DialogState(showDialog = false)
+        ),
         onSignUpClick = {},
         onForgotPasswordClick = {},
         onContinueWithGoogleClick = {},
+        onDialogSubmit = {},
+        onDialogDismiss = {},
+        onDialogSelectionChange = {},
+        registerCompanyClick = {}
     )
 }

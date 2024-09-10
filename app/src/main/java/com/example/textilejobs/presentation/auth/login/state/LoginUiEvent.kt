@@ -8,5 +8,8 @@ sealed class LoginUiEvent {
     data object GoogleSignInTap : LoginUiEvent()
     data class HandleGoogleAuth(val result: GetCredentialResponse) : LoginUiEvent()
     data object Submit : LoginUiEvent()
+    data object DialogSubmit : LoginUiEvent()
+    data object DialogDismiss : LoginUiEvent()
+    data class OnDialogSelectionChange(val newSelection: Int) : LoginUiEvent()
     data object GoogleSignInFailed: LoginUiEvent()
 }

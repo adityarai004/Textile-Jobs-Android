@@ -6,9 +6,11 @@
     <string name="sign_up">Create Your Free Account</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="enter_your_email">Enter Your Email</string>
-    <string name="enter_your_first_name">Enter Your First Name</string>
-    <string name="enter_your_last_name">Enter Your Last Name</string>
+    <string name="enter_your_name">Enter Your Name</string>
     <string name="enter_your_mobile_number">Enter Your Mobile Number</string>
+    <string name="enter_your_company_email">Enter Your Company Email</string>
+    <string name="enter_your_company_name">Enter Your Company Name</string>
+    <string name="enter_your_company_mobile_number">Enter Your Company Mobile Number</string>
     <string name="enter_your_password">Enter Your Password</string>
     <string name="confirm_your_password">Confirm Your Password</string>
     <string name="icon_password_visible">Password Visible</string>
@@ -35,4 +37,9 @@
     <string name="grant_permission_from_settings">Please Grant Permission From Settings</string>
     <string name="account_created_successfully">Account Created Successfully, Please Login With Your Credentials</string>
     <string name="failed_to_continue_with_google">We are unable to process Google Sign In at the moment</string>
+    <string name="describe_yourself">Describe Yourself</string>
+    <string name="job_seeker">Job Seeker</string>
+    <string name="recruiter">Recruiter</string>
+    <string name="submit">Submit</string>
+    <string name="company_registration">Company Registration</string>
 </resources>

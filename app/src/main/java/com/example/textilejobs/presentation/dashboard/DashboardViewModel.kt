@@ -1,6 +1,8 @@
 package com.example.textilejobs.presentation.dashboard
 
 import androidx.lifecycle.ViewModel
+import com.example.textilejobs.presentation.dashboard.viewmodel.DashboardEvent
+import com.example.textilejobs.presentation.dashboard.viewmodel.DashboardState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

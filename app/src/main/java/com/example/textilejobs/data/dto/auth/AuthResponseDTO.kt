@@ -6,35 +6,39 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AuthResponseDTO(
     @SerialName("status")
-    val success: Boolean,
+    val success: Boolean? = null,
     @SerialName("message")
-    val message: String,
+    val message: String? = null,
     @SerialName("data")
-    val authData: AuthDataDTO?
+    val authData: AuthDataDTO? = null
 )
 
 @Serializable
 data class AuthDataDTO(
     @SerialName("accessToken")
-    val accessToken: String?,
+    val accessToken: String? = null,
     @SerialName("user")
-    val user: UserDTO?
+    val user: UserDTO? = null
 )
 
 @Serializable
 data class UserDTO(
     @SerialName("id")
-    val id: Int?,
+    val id: Int? = null,
     @SerialName("firstName")
-    val firstName: String?,
+    val firstName: String? = null,
     @SerialName("lastName")
-    val lastName: String?,
+    val lastName: String? = null,
     @SerialName("email")
-    val email: String?,
+    val email: String? = null,
     @SerialName("avatar")
-    val profilePhoto: String?,
+    val profilePhoto: String? = null,
     @SerialName("role")
-    val role: Int?,
+    // 0 -> Admin
+    // 1 -> User
+    // 2 -> Recruiter
+    // 3 -> None
+    val role: Int? = null,
     @SerialName("isActive")
-    val isActive: Boolean?
+    val isActive: Boolean? = null
 )

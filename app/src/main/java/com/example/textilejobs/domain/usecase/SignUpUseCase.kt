@@ -9,13 +9,13 @@ import javax.inject.Inject
 
 class SignUpUseCase @Inject constructor(private val authRepository: AuthRepository) {
     suspend operator fun invoke(
-        firstName: String,
-        lastName: String,
+        name: String,
         email: String,
         password: String,
-        mobileNumber: String
+        mobileNumber: String,
+        role: Int
     ): Flow<Resource<AuthResponseDTO>> {
-        val signUpRequestDTO = SignUpRequestDTO(firstName, lastName, email, password, "https://www.google.com", mobileNumber)
+        val signUpRequestDTO = SignUpRequestDTO(name, email, password, "https://www.google.com", mobileNumber, role)
         return authRepository.signUp(signUpRequestDTO)
     }
 }
