@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,8 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.textilejobs.R
-import com.example.textilejobs.core.ui.TJCircularProgress
+import com.example.textilejobs.core.desginsystem.TJCircularProgress
+import com.example.textilejobs.presentation.auth.AuthViewModel
 import com.example.textilejobs.presentation.auth.components.CustomButton
 import com.example.textilejobs.presentation.auth.components.MediumTitleText
 import com.example.textilejobs.presentation.auth.signup.components.ImagePicker
@@ -48,11 +51,12 @@ import com.example.textilejobs.presentation.auth.signup.state.SignUpUiEvent
 fun SignUpRoute(
     onClickAlreadyHaveAccount: () -> Unit,
     navigateToHome: () -> Unit,
-    signUpViewModel: SignUpViewModel = hiltViewModel()
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel
 ) {
     val signUpState by signUpViewModel.signUpState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
+    val isCompany = authViewModel.isCompany.collectAsState()
     val pickImageContract = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
@@ -126,14 +130,12 @@ fun SignUpRoute(
         },
         onNavigateToLogin = onClickAlreadyHaveAccount,
         onSignUpClick = {
-            signUpViewModel.onUiEvent(SignUpUiEvent.SignUpClick)
-        },
-        onLastNameChange = {
-            signUpViewModel.onUiEvent(SignUpUiEvent.LastNameChanged(it))
+            signUpViewModel.onUiEvent(SignUpUiEvent.SignUpClick(isCompany = isCompany.value))
         },
         onMobileNumberChange = {
             signUpViewModel.onUiEvent(SignUpUiEvent.MobileNoChanged(it))
-        }
+        },
+        isCompany = isCompany.value
     )
 }
 
@@ -141,14 +143,14 @@ fun SignUpRoute(
 fun SignUpScreen(
     signUpState: SignUpState,
     onFirstNameChange: (String) -> Unit,
-    onLastNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
     onMobileNumberChange: (String) -> Unit,
     onUploadImageClick: () -> Unit,
     onNavigateToLogin: () -> Unit,
-    onSignUpClick: () -> Unit
+    onSignUpClick: () -> Unit,
+    isCompany: Boolean
 ) {
     val scrollState = rememberScrollState()
     Scaffold { innerPadding ->
@@ -163,11 +165,13 @@ fun SignUpScreen(
                     .verticalScroll(scrollState)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
-                    ImagePicker(
-                        modifier = Modifier.fillMaxWidth(),
-                        filePath = signUpState.pickedPhoto, onClickUpload =
-                        onUploadImageClick
-                    )
+                    if(!isCompany){
+                        ImagePicker(
+                            modifier = Modifier.fillMaxWidth(),
+                            filePath = signUpState.pickedPhoto,
+                            onClickUpload = onUploadImageClick
+                        )
+                    }
                     MediumTitleText(
                         text = stringResource(id = R.string.sign_up),
                         style = TextStyle(fontSize = 26.sp, fontWeight = FontWeight.Medium),
@@ -175,10 +179,7 @@ fun SignUpScreen(
                     )
 
                     SignUpTextFields(
-                        firstNameValue = signUpState.firstName,
-                        lastNameValue = signUpState.lastName,
-                        lastNameErrorState = signUpState.errorState.lastNameErrorState,
-                        onLastNameChange = onLastNameChange,
+                        firstNameValue = signUpState.name,
                         emailValue = signUpState.email,
                         passwordValue = signUpState.password,
                         confirmPasswordValue = signUpState.confirmPassword,
@@ -192,7 +193,8 @@ fun SignUpScreen(
                         confirmPasswordErrorState = signUpState.errorState.confirmPasswordErrorState,
                         mobileNumber = signUpState.mobileNumber,
                         mobileErrorState = signUpState.errorState.mobileNumberErrorState,
-                        onMobileNumberChange = onMobileNumberChange
+                        onMobileNumberChange = onMobileNumberChange,
+                        isCompany = isCompany
                     )
                     TextButton(
                         onClick = onNavigateToLogin
@@ -210,7 +212,8 @@ fun SignUpScreen(
                     CustomButton(
                         onClick = onSignUpClick,
                         text = "Sign Up",
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        containerColor = R.color.success_green
                     )
                 }
             }
@@ -233,7 +236,7 @@ private fun SignUpScreenPreview() {
         onUploadImageClick = {},
         onNavigateToLogin = {},
         onSignUpClick = {},
-        onLastNameChange = {},
-        onMobileNumberChange = {}
+        onMobileNumberChange = {},
+        isCompany = true
     )
 }

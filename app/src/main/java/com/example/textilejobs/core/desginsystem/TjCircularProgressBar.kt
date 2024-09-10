@@ -1,4 +1,4 @@
-package com.example.textilejobs.core.ui
+package com.example.textilejobs.core.desginsystem
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

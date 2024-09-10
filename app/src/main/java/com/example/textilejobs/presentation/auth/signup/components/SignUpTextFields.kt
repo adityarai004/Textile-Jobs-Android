@@ -18,14 +18,11 @@ import com.example.textilejobs.presentation.auth.components.PasswordTextField
 fun SignUpTextFields(
     modifier: Modifier = Modifier,
     firstNameValue: String,
-    lastNameValue: String,
     mobileNumber: String,
     onMobileNumberChange: (String) -> Unit,
     mobileErrorState: ErrorState,
     onFirstNameChange: (String) -> Unit,
-    onLastNameChange: (String) -> Unit,
     firstNameErrorState: ErrorState,
-    lastNameErrorState: ErrorState,
     emailErrorState: ErrorState,
     passwordErrorState: ErrorState,
     confirmPasswordErrorState: ErrorState,
@@ -35,13 +32,23 @@ fun SignUpTextFields(
     onPasswordChange: (String) -> Unit,
     confirmPasswordValue: String,
     confirmPasswordChange: (String) -> Unit,
+    isCompany: Boolean
 ) {
+    var emailLabel = R.string.enter_your_email
+    var nameLabel = R.string.enter_your_name
+    var mobileLabel = R.string.enter_your_mobile_number
+
+    if(isCompany){
+        emailLabel = R.string.enter_your_company_email
+        nameLabel = R.string.enter_your_company_name
+        mobileLabel = R.string.enter_your_company_mobile_number
+    }
     Column(modifier = modifier) {
         AuthTextField(
             modifier = Modifier.fillMaxWidth(),
             value = emailValue,
             onValueChange = onEmailChange,
-            label = stringResource(id = R.string.enter_your_email),
+            label = stringResource(id = emailLabel),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -53,7 +60,7 @@ fun SignUpTextFields(
             modifier = Modifier.fillMaxWidth(),
             value = firstNameValue,
             onValueChange = onFirstNameChange,
-            label = stringResource(id = R.string.enter_your_first_name),
+            label = stringResource(id = nameLabel),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -63,21 +70,9 @@ fun SignUpTextFields(
         )
         AuthTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = lastNameValue,
-            onValueChange = onLastNameChange,
-            label = stringResource(id = R.string.enter_your_last_name),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Next
-            ),
-            isError = lastNameErrorState.hasError,
-            errorText = stringResource(lastNameErrorState.errorMessageStringResource)
-        )
-        AuthTextField(
-            modifier = Modifier.fillMaxWidth(),
             value = mobileNumber,
             onValueChange = onMobileNumberChange,
-            label = stringResource(id = R.string.enter_your_mobile_number),
+            label = stringResource(id = mobileLabel),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Phone,
                 imeAction = ImeAction.Next

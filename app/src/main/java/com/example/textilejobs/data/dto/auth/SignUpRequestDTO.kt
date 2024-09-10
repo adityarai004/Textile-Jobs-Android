@@ -7,8 +7,6 @@ import kotlinx.serialization.Serializable
 data class SignUpRequestDTO(
     @SerialName("firstName")
     val firstName: String,
-    @SerialName("lastName")
-    val lastName: String,
     @SerialName("email")
     val email: String,
     @SerialName("password")
@@ -16,5 +14,7 @@ data class SignUpRequestDTO(
     @SerialName("avatar")
     val avatar: String = "https://masti.com",
     @SerialName("phoneNo")
-    val mobileNumber: String
+    val mobileNumber: String,
+    @SerialName("role")
+    val role: Int
 )

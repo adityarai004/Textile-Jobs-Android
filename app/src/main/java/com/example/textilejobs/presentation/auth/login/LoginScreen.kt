@@ -1,5 +1,6 @@
 package com.example.textilejobs.presentation.auth.login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,18 +46,30 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.textilejobs.R
-import com.example.textilejobs.core.ui.TJCircularProgress
+import com.example.textilejobs.core.constants.NetworkConstants
+import com.example.textilejobs.core.desginsystem.TJCircularProgress
+import com.example.textilejobs.presentation.auth.AuthViewModel
 import com.example.textilejobs.presentation.auth.components.AuthTextField
 import com.example.textilejobs.presentation.auth.components.CustomButton
 import com.example.textilejobs.presentation.auth.components.MediumTitleText
 import com.example.textilejobs.presentation.auth.components.PasswordTextField
 import com.example.textilejobs.presentation.auth.login.components.AccountRow
+import com.example.textilejobs.presentation.auth.login.components.DescribeYourselfDialog
+import com.example.textilejobs.presentation.auth.login.state.DialogState
 import com.example.textilejobs.presentation.auth.login.state.LoginState
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginRoute(
     loginViewModel: LoginViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel,
     onNavigateToHome: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     onNavigateToForgotPassword: () -> Unit
@@ -64,9 +79,14 @@ fun LoginRoute(
         loginViewModel.loginState
     }
     val state = rememberScrollState()
-    LaunchedEffect(key1 = loginState.isLoginError) {
+    val coroutineScope = rememberCoroutineScope()
+    val loginErrorString = stringResource(id = R.string.failed_to_continue_with_google)
+    LaunchedEffect(key1 = loginState.isLoginError, key2 = loginState.continueWithGoogleError) {
         if (loginState.isLoginError) {
             Toast.makeText(context, loginState.loginErrorString, Toast.LENGTH_LONG).show()
+        }
+        if (loginState.continueWithGoogleError) {
+            Toast.makeText(context, loginErrorString, Toast.LENGTH_LONG).show()
         }
         loginViewModel.resetLoginError()
     }
@@ -76,11 +96,42 @@ fun LoginRoute(
         }
     }
 
+    LaunchedEffect(loginState.continueWithGoogleInProgress) {
+
+        if (loginState.continueWithGoogleInProgress) {
+            val signInWithGoogleOption: GetSignInWithGoogleOption =
+                GetSignInWithGoogleOption.Builder(NetworkConstants.WEB_CLIENT_ID)
+                    .build()
+
+            val getCredentialRequest = GetCredentialRequest.Builder()
+                .addCredentialOption(signInWithGoogleOption)
+                .build()
+
+
+            coroutineScope.launch(Dispatchers.IO) {
+                try {
+                    val result = CredentialManager.create(context).getCredential(
+                        context = context,
+                        request = getCredentialRequest
+                    )
+                    loginViewModel.onUiEvent(loginUiEvent = LoginUiEvent.HandleGoogleAuth(result))
+                } catch (e: GetCredentialCancellationException) {
+                    loginViewModel.onUiEvent(LoginUiEvent.GoogleSignInFailed)
+                    Log.e("GoogleSignIn", "Failed Google Sign In due to $e")
+                } catch (e: Exception) {
+                    loginViewModel.onUiEvent(LoginUiEvent.GoogleSignInFailed)
+                    Log.e("GoogleSignIn", "Failed Google Sign In due to $e")
+                }
+            }
+        }
+    }
+
     Scaffold { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             Column(modifier = Modifier.verticalScroll(state)) {
                 MainScreen(
-                    loginState = loginState, onEmailChange = { inputString ->
+                    loginState = loginState,
+                    onEmailChange = { inputString ->
                         loginViewModel.onUiEvent(
                             loginUiEvent = LoginUiEvent.EmailChanged(
                                 inputString
@@ -93,8 +144,27 @@ fun LoginRoute(
                     onSubmit = {
                         loginViewModel.onUiEvent(LoginUiEvent.Submit)
                     },
-                    onSignUpClick = onNavigateToSignUp,
-                    onForgotPasswordClick = onNavigateToForgotPassword
+                    onSignUpClick = {
+                        authViewModel.changeIsCompany(false)
+                        onNavigateToSignUp()
+                    },
+                    onForgotPasswordClick = onNavigateToForgotPassword,
+                    onContinueWithGoogleClick = {
+                        loginViewModel.onUiEvent(LoginUiEvent.GoogleSignInTap)
+                    },
+                    onDialogDismiss = {
+                        loginViewModel.onUiEvent(LoginUiEvent.DialogDismiss)
+                    },
+                    onDialogSelectionChange = {
+                        loginViewModel.onUiEvent(LoginUiEvent.OnDialogSelectionChange(it))
+                    },
+                    onDialogSubmit = {
+                        loginViewModel.onUiEvent(LoginUiEvent.DialogSubmit)
+                    },
+                    registerCompanyClick = {
+                        authViewModel.changeIsCompany(true)
+                        onNavigateToSignUp()
+                    }
                 )
             }
             if (loginState.loginInProgress) {
@@ -111,8 +181,19 @@ private fun MainScreen(
     onPasswordChange: (String) -> Unit,
     onSignUpClick: () -> Unit,
     onForgotPasswordClick: () -> Unit,
-    onSubmit: () -> Unit
+    onSubmit: () -> Unit,
+    onContinueWithGoogleClick: () -> Unit,
+    onDialogSubmit: () -> Unit,
+    onDialogSelectionChange: (Int) -> Unit,
+    onDialogDismiss: () -> Unit,
+    registerCompanyClick: () -> Unit
 ) {
+    DescribeYourselfDialog(
+        dialogState = loginState.dialogState,
+        onDismiss = onDialogDismiss,
+        onSubmit = onDialogSubmit,
+        onSelectionChange = onDialogSelectionChange
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -128,7 +209,9 @@ private fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth(0.6f)
                 .height(50.dp)
-                .clickable {  }
+                .clickable {
+                    onContinueWithGoogleClick()
+                }
                 .border(
                     width = 2.dp,
                     color = colorResource(id = R.color.muted_gray),
@@ -173,10 +256,14 @@ private fun MainScreen(
         }
 
         Column(modifier = Modifier.padding(10.dp)) {
-            MediumTitleText(text = stringResource(id = R.string.please_login_with_credentials), style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp
-            ), modifier = Modifier.padding(6.dp))
+            MediumTitleText(
+                text = stringResource(id = R.string.please_login_with_credentials),
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp
+                ),
+                modifier = Modifier.padding(6.dp)
+            )
             AuthTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = loginState.email,
@@ -206,12 +293,26 @@ private fun MainScreen(
             CustomButton(
                 onClick = onSubmit,
                 text = stringResource(id = R.string.login),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                containerColor = R.color.success_green
             )
             AccountRow(
                 modifier = Modifier.fillMaxWidth(),
                 onSignUpClick = onSignUpClick,
                 onForgotPasswordClick = onForgotPasswordClick
+            )
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
+                thickness = 2.dp
+            )
+            CustomButton(
+                onClick = registerCompanyClick,
+                text = stringResource(id = R.string.company_registration),
+                modifier = Modifier.fillMaxWidth(),
+                containerColor = R.color.purple_700,
+                fontColor = Color.White
             )
         }
     }
@@ -224,7 +325,15 @@ private fun LoginScreenPrev() {
         onPasswordChange = {},
         onSubmit = {},
         onEmailChange = {},
-        loginState = LoginState(),
+        loginState = LoginState(
+            dialogState = DialogState(showDialog = false)
+        ),
         onSignUpClick = {},
-        onForgotPasswordClick = {})
+        onForgotPasswordClick = {},
+        onContinueWithGoogleClick = {},
+        onDialogSubmit = {},
+        onDialogDismiss = {},
+        onDialogSelectionChange = {},
+        registerCompanyClick = {}
+    )
 }

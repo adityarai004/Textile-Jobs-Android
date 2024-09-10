@@ -1,4 +1,4 @@
-package com.example.textilejobs.core.networking
+package com.example.textilejobs.data.datasources
 
 import com.example.textilejobs.data.dto.auth.AuthResponseDTO
 import com.example.textilejobs.core.constants.NetworkConstants
@@ -22,9 +22,21 @@ class AuthService @Inject constructor(private val client: HttpClient) {
     }
 
     suspend fun signup(signUpRequestDTO: SignUpRequestDTO): AuthResponseDTO {
-        val response = client.post(NetworkConstants.SIGN_UP){
+        val response = client.post(NetworkConstants.SIGN_UP) {
             setBody(
                 signUpRequestDTO
+            )
+        }.body<AuthResponseDTO>()
+        return response
+    }
+
+    suspend fun continueWithGoogle(googleAuthId: String, role: Int): AuthResponseDTO {
+        val response = client.post(NetworkConstants.CONTINUE_WITH_GOOGLE) {
+            setBody(
+                mapOf(
+                    "idToken" to googleAuthId,
+                    "role" to role
+                )
             )
         }.body<AuthResponseDTO>()
         return response
