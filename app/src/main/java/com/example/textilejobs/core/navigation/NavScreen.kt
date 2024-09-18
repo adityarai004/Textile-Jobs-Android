@@ -25,3 +25,4 @@ object NavSignUp
 
 @Serializable
 object NavForgotPassword
+

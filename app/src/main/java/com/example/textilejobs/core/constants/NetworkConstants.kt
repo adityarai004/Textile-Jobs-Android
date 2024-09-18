@@ -7,4 +7,5 @@ object NetworkConstants {
     const val LOGIN = "/api/v1/auth/login"
     const val SIGN_UP = "/api/v1/auth/register"
     const val CONTINUE_WITH_GOOGLE = "/api/v1/auth/google"
+    const val JOB_LISTING = "/api/v1/jobs"
 }

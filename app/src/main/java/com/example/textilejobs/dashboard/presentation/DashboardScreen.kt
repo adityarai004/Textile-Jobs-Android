@@ -36,6 +36,7 @@ import com.example.textilejobs.core.navigation.NavStatusScreen
 import com.example.textilejobs.dashboard.presentation.viewmodel.DashboardEvent
 import com.example.textilejobs.dashboard.presentation.viewmodel.DashboardState
 import com.example.textilejobs.dashboard.presentation.viewmodel.DashboardViewModel
+import com.example.textilejobs.home.presentation.HomeRoute
 
 @Composable
 fun DashboardRoute(
@@ -113,7 +114,7 @@ fun DashboardScreen(
                     }
                 }
             ) {
-                Text(text = "Home Screen")
+                HomeRoute()
             }
             composable<NavStatusScreen> {
                 Text(text = "Status Screen")

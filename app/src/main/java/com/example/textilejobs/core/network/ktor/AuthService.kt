@@ -1,9 +1,9 @@
-package com.example.textilejobs.auth.data.datasources
+package com.example.textilejobs.core.network.ktor
 
-import com.example.textilejobs.auth.data.auth.AuthResponseDTO
+import com.example.textilejobs.auth.data.model.AuthResponseDTO
 import com.example.textilejobs.core.constants.NetworkConstants
-import com.example.textilejobs.auth.data.auth.LoginRequestDTO
-import com.example.textilejobs.auth.data.auth.SignUpRequestDTO
+import com.example.textilejobs.auth.data.model.LoginRequestDTO
+import com.example.textilejobs.auth.data.model.SignUpRequestDTO
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post

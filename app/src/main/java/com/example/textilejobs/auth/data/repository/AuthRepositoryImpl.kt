@@ -1,13 +1,12 @@
 package com.example.textilejobs.auth.data.repository
 
-import com.example.textilejobs.auth.data.datasources.AuthService
-import com.example.textilejobs.auth.data.auth.AuthResponseDTO
+import com.example.textilejobs.core.network.ktor.AuthService
+import com.example.textilejobs.auth.data.model.AuthResponseDTO
 import com.example.textilejobs.core.utils.Resource
-import com.example.textilejobs.auth.data.auth.LoginRequestDTO
-import com.example.textilejobs.auth.data.auth.SignUpRequestDTO
+import com.example.textilejobs.auth.data.model.LoginRequestDTO
+import com.example.textilejobs.auth.data.model.SignUpRequestDTO
 import com.example.textilejobs.auth.domain.repository.AuthRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(

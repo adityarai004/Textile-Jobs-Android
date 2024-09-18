@@ -10,6 +10,8 @@ import com.example.textilejobs.core.data.repository.UserDataRepository
 import com.example.textilejobs.core.use_case.GetIsLanguageChosenUseCase
 import com.example.textilejobs.core.use_case.GetIsUserLoggedInUseCase
 import com.example.textilejobs.core.use_case.GetUserAuthKeyUseCase
+import com.example.textilejobs.home.domain.repository.HomeRepository
+import com.example.textilejobs.home.domain.usecase.GetJobListingUseCase
 import com.example.textilejobs.language.domain.usecase.SetIsLanguageChosenUseCase
 import dagger.Module
 import dagger.Provides
@@ -61,13 +63,13 @@ object UseCaseModule {
     fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase =
         SignUpUseCase(authRepository)
 
-//    @Provides
-//    @Singleton
-//    fun provideSetIntUseCase(localPrefsRepository: LocalPrefsRepository): SetIntUseCase =
-//        SetIntUseCase(localPrefsRepository)
-
     @Provides
     @Singleton
     fun providerSignInWithGoogleUseCase(authRepository: AuthRepository): SignInWithGoogleUseCase =
         SignInWithGoogleUseCase(authRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetJobListingUseCase(homeRepository: HomeRepository): GetJobListingUseCase =
+        GetJobListingUseCase(homeRepository)
 }

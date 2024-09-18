@@ -1,8 +1,9 @@
-package com.example.textilejobs.core.di
+package com.example.textilejobs.core.network.di
 
 import android.util.Log
-import com.example.textilejobs.auth.data.datasources.AuthService
+import com.example.textilejobs.core.network.ktor.AuthService
 import com.example.textilejobs.core.constants.NetworkConstants
+import com.example.textilejobs.core.network.ktor.HomeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -70,5 +71,11 @@ object NetworkModule {
     @Singleton
     fun provideAuthService(client: HttpClient): AuthService {
         return AuthService(client)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHomeService(client: HttpClient): HomeService {
+        return HomeService(client)
     }
 }

@@ -6,11 +6,10 @@ import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.textilejobs.core.constants.LocalPrefsConstants.PROFILE_COMPLETION_STATUS
 import com.example.textilejobs.core.constants.RegexConstants
 import com.example.textilejobs.core.utils.ErrorState
 import com.example.textilejobs.core.utils.Resource
-import com.example.textilejobs.auth.data.auth.AuthResponseDTO
+import com.example.textilejobs.auth.data.model.AuthResponseDTO
 import com.example.textilejobs.auth.domain.usecase.SetUserAuthTokenUseCase
 import com.example.textilejobs.auth.domain.usecase.SignInWithGoogleUseCase
 import com.example.textilejobs.auth.presentation.emailEmptyErrorState
@@ -25,6 +24,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingExcept
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -207,7 +207,7 @@ class LoginViewModel @Inject constructor(
         return !(loginState.value.errorState.passwordErrorState.hasError || loginState.value.errorState.emailOrMobileErrorState.hasError)
     }
 
-    private fun handleLoginProgress(resource: Resource<AuthResponseDTO>) {
+    private suspend fun handleLoginProgress(resource: Resource<AuthResponseDTO>) {
         when (resource) {
             is Resource.Error -> {
                 loginState.value = loginState.value.copy(
@@ -223,9 +223,9 @@ class LoginViewModel @Inject constructor(
 
             is Resource.Success -> {
                 if (resource.data.success == true) {
-                    viewModelScope.launch(Dispatchers.IO) {
+                    withContext(Dispatchers.IO){
                         setUserAuthTokenUseCase(resource.data.authData?.accessToken ?: "")
-//                        setIntUseCase(
+                    //                        setIntUseCase(
 //                            PROFILE_COMPLETION_STATUS,
 //                            resource.data.authData?.user?.role ?: 3
 //                        )
