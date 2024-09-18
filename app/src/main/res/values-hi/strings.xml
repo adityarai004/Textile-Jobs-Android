@@ -39,5 +39,10 @@
     <string name="enter_your_company_email">अपना कंपनी ईमेल दर्ज करें</string>
     <string name="enter_your_company_name">अपना कंपनी का नाम दर्ज करें</string>
     <string name="enter_your_company_mobile_number">अपना कंपनी मोबाइल नंबर दर्ज करें</string>
+    <string name="describe_yourself">अपने बारे में बताएं</string>
+    <string name="job_seeker">नौकरी तलाशने वाला</string>
+    <string name="recruiter">नियोक्ता</string>
+    <string name="submit">जमा करें</string>
+    <string name="company_registration">कंपनी पंजीकरण</string>
 
 </resources>

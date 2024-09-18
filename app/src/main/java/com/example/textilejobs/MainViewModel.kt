@@ -2,9 +2,8 @@ package com.example.textilejobs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.textilejobs.core.constants.LocalPrefsConstants
-import com.example.textilejobs.domain.usecase.GetBooleanUseCase
-import com.example.textilejobs.domain.usecase.GetUserAuthKeyUseCase
+import com.example.textilejobs.core.use_case.GetIsLanguageChosenUseCase
+import com.example.textilejobs.core.use_case.GetIsUserLoggedInUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,8 +11,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val getBooleanUseCase: GetBooleanUseCase,
-    private val getUserAuthKeyUseCase: GetUserAuthKeyUseCase
+    private val getIsUserLoggedInUseCase: GetIsUserLoggedInUseCase,
+    private val getIsLanguageChosenUseCase: GetIsLanguageChosenUseCase
 ) : ViewModel() {
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
@@ -26,8 +25,8 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _isLoggedIn.value = getBooleanUseCase.invoke(LocalPrefsConstants.USER_IS_LOGGED_IN)
-            _isLanguageChosen.value = getBooleanUseCase.invoke(LocalPrefsConstants.IS_LANGUAGE_CHOSEN)
+            _isLoggedIn.value = getIsUserLoggedInUseCase()
+            _isLanguageChosen.value = getIsLanguageChosenUseCase()
             _isLoading.value = false
         }
     }

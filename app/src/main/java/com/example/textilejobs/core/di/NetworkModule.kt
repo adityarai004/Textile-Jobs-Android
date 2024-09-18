@@ -1,7 +1,7 @@
 package com.example.textilejobs.core.di
 
 import android.util.Log
-import com.example.textilejobs.data.datasources.AuthService
+import com.example.textilejobs.auth.data.datasources.AuthService
 import com.example.textilejobs.core.constants.NetworkConstants
 import dagger.Module
 import dagger.Provides

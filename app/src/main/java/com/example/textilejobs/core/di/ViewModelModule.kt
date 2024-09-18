@@ -1,8 +1,8 @@
 package com.example.textilejobs.core.di
 
 import com.example.textilejobs.MainViewModel
-import com.example.textilejobs.domain.usecase.GetBooleanUseCase
-import com.example.textilejobs.domain.usecase.GetUserAuthKeyUseCase
+import com.example.textilejobs.core.use_case.GetIsLanguageChosenUseCase
+import com.example.textilejobs.core.use_case.GetIsUserLoggedInUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +16,7 @@ object ViewModelModule {
     @Provides
     @Singleton
     fun provideMainViewModel(
-        getBooleanUseCase: GetBooleanUseCase,
-        getUserAuthKeyUseCase: GetUserAuthKeyUseCase
-    ): MainViewModel = MainViewModel(getBooleanUseCase, getUserAuthKeyUseCase)
+        getIsUserLoggedInUseCase: GetIsUserLoggedInUseCase,
+        getIsLanguageChosenUseCase: GetIsLanguageChosenUseCase
+    ): MainViewModel = MainViewModel(getIsUserLoggedInUseCase, getIsLanguageChosenUseCase)
 }

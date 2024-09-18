@@ -39,5 +39,10 @@
     <string name="enter_your_company_email">તમારું કંપનીનું ઇમેઇલ દાખલ કરો</string>
     <string name="enter_your_company_name">તમારું કંપનીનું નામ દાખલ કરો</string>
     <string name="enter_your_company_mobile_number">તમારું કંપનીનું મોબાઇલ નંબર દાખલ કરો</string>
+    <string name="describe_yourself">તમારા વિશે વર્ણન કરો</string>
+    <string name="job_seeker">નોકરી શોધનાર</string>
+    <string name="recruiter">ભરતી કરનાર</string>
+    <string name="submit">સબમિટ કરો</string>
+    <string name="company_registration">કંપની નોંધણી</string>
 
 </resources>
