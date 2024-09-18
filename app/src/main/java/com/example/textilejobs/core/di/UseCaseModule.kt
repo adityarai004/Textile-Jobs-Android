@@ -1,17 +1,16 @@
 package com.example.textilejobs.core.di
 
-import com.example.textilejobs.domain.repository.AuthRepository
-import com.example.textilejobs.domain.repository.LocalPrefsRepository
-import com.example.textilejobs.domain.usecase.GetBooleanUseCase
-import com.example.textilejobs.domain.usecase.GetStringUseCase
-import com.example.textilejobs.domain.usecase.GetUserAuthKeyUseCase
-import com.example.textilejobs.domain.usecase.LoginUseCase
-import com.example.textilejobs.domain.usecase.SetBooleanUseCase
-import com.example.textilejobs.domain.usecase.SetIntUseCase
-import com.example.textilejobs.domain.usecase.SetStringUseCase
-import com.example.textilejobs.domain.usecase.SetUserAuthTokenUseCase
-import com.example.textilejobs.domain.usecase.SignInWithGoogleUseCase
-import com.example.textilejobs.domain.usecase.SignUpUseCase
+import com.example.textilejobs.auth.domain.repository.AuthRepository
+import com.example.textilejobs.auth.domain.usecase.LoginUseCase
+import com.example.textilejobs.auth.domain.usecase.SetIsUserLoggedInUseCase
+import com.example.textilejobs.auth.domain.usecase.SetUserAuthTokenUseCase
+import com.example.textilejobs.auth.domain.usecase.SignInWithGoogleUseCase
+import com.example.textilejobs.auth.domain.usecase.SignUpUseCase
+import com.example.textilejobs.core.data.repository.UserDataRepository
+import com.example.textilejobs.core.use_case.GetIsLanguageChosenUseCase
+import com.example.textilejobs.core.use_case.GetIsUserLoggedInUseCase
+import com.example.textilejobs.core.use_case.GetUserAuthKeyUseCase
+import com.example.textilejobs.language.domain.usecase.SetIsLanguageChosenUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,43 +28,43 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetUserAuthKeyUseCase(localPrefsRepository: LocalPrefsRepository): GetUserAuthKeyUseCase =
-        GetUserAuthKeyUseCase(localPrefsRepository)
+    fun provideGetUserAuthKeyUseCase(userDataRepository: UserDataRepository): GetUserAuthKeyUseCase =
+        GetUserAuthKeyUseCase(userDataRepository)
 
     @Provides
     @Singleton
-    fun provideSetUserAuthKeyUseCase(localPrefsRepository: LocalPrefsRepository): SetUserAuthTokenUseCase =
-        SetUserAuthTokenUseCase(localPrefsRepository)
+    fun provideSetUserAuthKeyUseCase(userDataRepository: UserDataRepository): SetUserAuthTokenUseCase =
+        SetUserAuthTokenUseCase(userDataRepository)
 
     @Provides
     @Singleton
-    fun provideGetBooleanUseCase(localPrefsRepository: LocalPrefsRepository): GetBooleanUseCase =
-        GetBooleanUseCase(localPrefsRepository)
+    fun provideGetIsUserLoggedInUseCase(userDataRepository: UserDataRepository): GetIsUserLoggedInUseCase =
+        GetIsUserLoggedInUseCase(userDataRepository)
 
     @Provides
     @Singleton
-    fun provideGetStringUseCase(localPrefsRepository: LocalPrefsRepository): GetStringUseCase =
-        GetStringUseCase(localPrefsRepository)
+    fun provideSetIsUserLoggedInUseCase(userDataRepository: UserDataRepository): SetIsUserLoggedInUseCase =
+        SetIsUserLoggedInUseCase(userDataRepository)
 
     @Provides
     @Singleton
-    fun provideSetBoolUseCase(localPrefsRepository: LocalPrefsRepository): SetBooleanUseCase =
-        SetBooleanUseCase(localPrefsRepository)
+    fun provideGetIsLanguageChosenUseCase(userDataRepository: UserDataRepository): GetIsLanguageChosenUseCase =
+        GetIsLanguageChosenUseCase(userDataRepository)
 
     @Provides
     @Singleton
-    fun provideSetStringUseCase(localPrefsRepository: LocalPrefsRepository): SetStringUseCase =
-        SetStringUseCase(localPrefsRepository)
+    fun provideSetIsLanguageChosenUseCase(userDataRepository: UserDataRepository): SetIsLanguageChosenUseCase =
+        SetIsLanguageChosenUseCase(userDataRepository)
 
     @Provides
     @Singleton
     fun provideSignUpUseCase(authRepository: AuthRepository): SignUpUseCase =
         SignUpUseCase(authRepository)
 
-    @Provides
-    @Singleton
-    fun provideSetIntUseCase(localPrefsRepository: LocalPrefsRepository): SetIntUseCase =
-        SetIntUseCase(localPrefsRepository)
+//    @Provides
+//    @Singleton
+//    fun provideSetIntUseCase(localPrefsRepository: LocalPrefsRepository): SetIntUseCase =
+//        SetIntUseCase(localPrefsRepository)
 
     @Provides
     @Singleton

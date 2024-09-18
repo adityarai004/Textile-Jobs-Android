@@ -6,11 +6,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.textilejobs.presentation.auth.AuthViewModel
-import com.example.textilejobs.presentation.auth.login.LoginRoute
-import com.example.textilejobs.presentation.auth.signup.SignUpRoute
-import com.example.textilejobs.presentation.dashboard.viewmodel.DashboardRoute
-import com.example.textilejobs.presentation.language.LanguageRoute
+import com.example.textilejobs.auth.presentation.AuthViewModel
+import com.example.textilejobs.auth.presentation.login.LoginRoute
+import com.example.textilejobs.auth.presentation.signup.SignUpRoute
+import com.example.textilejobs.dashboard.presentation.DashboardRoute
+import com.example.textilejobs.language.presentation.LanguageRoute
 
 @Composable
 fun NavigationService(navHostController: NavHostController, startDestination: Any) {
