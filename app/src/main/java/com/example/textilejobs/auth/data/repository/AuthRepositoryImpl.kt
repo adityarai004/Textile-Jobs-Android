@@ -9,9 +9,7 @@ import com.example.textilejobs.auth.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(
-    private val authService: AuthService
-) :
+class AuthRepositoryImpl @Inject constructor(private val authService: AuthService) :
     AuthRepository {
     override suspend fun login(loginRequestDTO: LoginRequestDTO): Flow<Resource<AuthResponseDTO>> =
         flow {
