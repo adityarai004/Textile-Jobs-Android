@@ -34,7 +34,7 @@ class HomeViewModel @Inject constructor(private val getJobListingUseCase: GetJob
 
     private fun fetchJobs() {
         viewModelScope.launch(Dispatchers.IO) {
-            getJobListingUseCase.invoke(_homeUiState.value.currentPage, 10).collect {
+            getJobListingUseCase(_homeUiState.value.currentPage, 10).collect {
                 handleJobsData(it)
             }
         }

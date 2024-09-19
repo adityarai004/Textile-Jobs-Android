@@ -5,7 +5,7 @@ import com.example.textilejobs.home.domain.repository.HomeRepository
 import javax.inject.Inject
 
 class GetJobListingUseCase @Inject constructor(private val homeRepository: HomeRepository) {
-    suspend operator fun invoke(page: Int, perPage: Int) = homeRepository.getJobList(
+    operator fun invoke(page: Int, perPage: Int) = homeRepository.getJobList(
         JobListingRequestDTO(page, perPage)
     )
 }
