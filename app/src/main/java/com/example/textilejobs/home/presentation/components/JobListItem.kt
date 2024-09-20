@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -34,12 +34,11 @@ import com.example.textilejobs.home.data.dto.CompanyDTO
 import com.example.textilejobs.home.data.dto.JobDTO
 
 @Composable
-fun HomeListItem(modifier: Modifier = Modifier, job: JobDTO) {
+fun JobListItem(modifier: Modifier = Modifier, job: JobDTO) {
     Column(
         modifier = Modifier
             .padding(horizontal = 12.dp, vertical = 8.dp)
             .border(BorderStroke(1.dp, Color.Black), shape = RoundedCornerShape(20.dp))
-            .height(180.dp)
             .fillMaxWidth()
     ) {
         Row(
@@ -48,10 +47,11 @@ fun HomeListItem(modifier: Modifier = Modifier, job: JobDTO) {
                 .height(40.dp)
         ) {
             AsyncImage(
-                model = job.description, contentDescription = null, placeholder = painterResource(
-                    id = R.drawable.ic_google,
-                ),
-                modifier = Modifier.size(40.dp)
+                model = job.company?.logoUrl,
+                contentDescription = null,
+                placeholder = painterResource(id = R.drawable.ic_google),
+                modifier = Modifier.size(40.dp),
+                error = painterResource(id = R.drawable.ic_launcher_foreground)
             )
             Column(
                 modifier
@@ -81,36 +81,48 @@ fun HomeListItem(modifier: Modifier = Modifier, job: JobDTO) {
                 Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
             }
         }
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(6.dp)) {
-            Icon(
-                imageVector = Icons.Default.LocationOn,
+        IconTextRow(imageId = R.drawable.location, text = job.location ?: "Somewhere")
+        IconTextRow(imageId = R.drawable.rupee, text = job.salary ?: "Not disclosed")
+        IconTextRow(imageId = R.drawable.clock, text = job.shift ?: "Day Shift")
+    }
+}
+
+@Composable
+fun IconTextRow(imageId: Int, text: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp)
+    ) {
+        Box(modifier = Modifier.size(30.dp), contentAlignment = Alignment.Center) {
+            Image(
+                painter = painterResource(id = imageId),
                 contentDescription = null,
-                modifier = Modifier.size(26.dp),
-            )
-            Text(
-                text = job.location ?: "World",
-                style = TextStyle(
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp,
-                    color = Color.Black
-                )
+                modifier = Modifier.size(20.dp),
             )
         }
+        Text(
+            text = text,
+            style = TextStyle(
+                fontWeight = FontWeight.Normal,
+                fontSize = 12.sp,
+                color = Color.Black
+            )
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun HomeListItemPrev() {
-    HomeListItem(
+    JobListItem(
         job = JobDTO(
             id = 2,
             title = "Product Manager",
             company = CompanyDTO(name = "XYZ Corp"),
             location = "London, UK",
-            salary = "£70,000 - £100,000",
+            salary = "70,000 - 100,000",
             jobType = "Full-time",
-            isRemote = false,
+            shift = "Day/Night",
             postedAt = "2024-08-25",
             description = "Lead the product development team and manage project timelines for financial software products."
         )

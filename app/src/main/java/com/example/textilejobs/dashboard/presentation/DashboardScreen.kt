@@ -130,7 +130,7 @@ fun DashboardScreen(
 @Composable
 private fun DashboardPreview() {
     DashboardScreen(
-        dashboardState = DashboardState(selectedScreen = 2),
+        dashboardState = DashboardState(selectedScreen = 0),
         onChangeScreen = {},
         navController = NavHostController(
             LocalContext.current

@@ -35,8 +35,8 @@ data class JobDTO(
     val salary: String? = null,  // This can also be a more complex type depending on salary format (e.g., range, currency)
     @SerialName("jobType")
     val jobType: String? = null, // e.g., "Full-time", "Part-time"
-    @SerialName("isRemote")
-    val isRemote: Boolean? = null,
+    @SerialName("shift")
+    val shift: String? = null,
     @SerialName("postedAt")
     val postedAt: String? = null, // Date when the job was posted
     @SerialName("description")

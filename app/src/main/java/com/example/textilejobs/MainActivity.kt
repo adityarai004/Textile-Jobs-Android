@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             TextileJobsTheme {
                 if (!isLoading.value) {
                     val startDestination: Any =
-                        if (isLoggedIn.value) NavDashboardScreen else if (!isLanguageChosen.value) NavLanguageScreen else NavLoginScreen
+                        if (true) NavDashboardScreen else if (!isLanguageChosen.value) NavLanguageScreen else NavLoginScreen
                     NavigationService(navHostController, startDestination)
                 }
             }

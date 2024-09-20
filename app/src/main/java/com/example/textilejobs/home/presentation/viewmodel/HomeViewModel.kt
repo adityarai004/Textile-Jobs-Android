@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.textilejobs.auth.data.model.AuthResponseDTO
 import com.example.textilejobs.core.utils.Resource
+import com.example.textilejobs.home.data.dto.CompanyDTO
 import com.example.textilejobs.home.data.dto.JobDTO
 import com.example.textilejobs.home.data.dto.JobListingResponseDTO
 import com.example.textilejobs.home.domain.usecase.GetJobListingUseCase
@@ -33,11 +34,117 @@ class HomeViewModel @Inject constructor(private val getJobListingUseCase: GetJob
         )
 
     private fun fetchJobs() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getJobListingUseCase(_homeUiState.value.currentPage, 10).collect {
-                handleJobsData(it)
-            }
+        _homeUiState.update { it ->
+            it.copy(
+                jobsList = listOf(
+                    JobDTO(
+                        id = 1,
+                        title = "Software Engineer",
+                        company = CompanyDTO(name = "ABC Tech"),
+                        location = "New York, USA",
+                        salary = "$90,000 - $120,000",
+                        jobType = "Full-time",
+                        shift = "Day",
+                        postedAt = "2024-09-01",
+                        description = "We are looking for a Software Engineer with experience in Kotlin and Android development."
+                    ),
+                    JobDTO(
+                        id = 2,
+                        title = "Product Manager",
+                        company = CompanyDTO(name = "XYZ Corp"),
+                        location = "London, UK",
+                        salary = "£70,000 - £100,000",
+                        jobType = "Full-time",
+                        shift = "Night",
+                        postedAt = "2024-08-25",
+                        description = "Lead the product development team and manage project timelines for financial software products."
+                    ),
+                    JobDTO(
+                        id = 3,
+                        title = "Data Scientist",
+                        company = CompanyDTO(name = "LMN Inc"),
+                        location = "Remote",
+                        salary = "$110,000 - $150,000",
+                        jobType = "Part-time",
+                        shift = "General",
+                        postedAt = "2024-09-10",
+                        description = "Analyze large datasets to derive actionable insights for healthcare applications."
+                    ),
+                    JobDTO(
+                        id = 3,
+                        title = "Data Scientist",
+                        company = CompanyDTO(name = "LMN Inc"),
+                        location = "Remote",
+                        salary = "$110,000 - $150,000",
+                        jobType = "Part-time",
+                        shift = "General",
+                        postedAt = "2024-09-10",
+                        description = "Analyze large datasets to derive actionable insights for healthcare applications."
+                    ),
+                    JobDTO(
+                        id = 3,
+                        title = "Data Scientist",
+                        company = CompanyDTO(name = "LMN Inc"),
+                        location = "Remote",
+                        salary = "$110,000 - $150,000",
+                        jobType = "Part-time",
+                        shift = "General",
+                        postedAt = "2024-09-10",
+                        description = "Analyze large datasets to derive actionable insights for healthcare applications."
+                    ),
+                    JobDTO(
+                        id = 3,
+                        title = "Data Scientist",
+                        company = CompanyDTO(name = "LMN Inc"),
+                        location = "Remote",
+                        salary = "$110,000 - $150,000",
+                        jobType = "Part-time",
+                        shift = "General",
+                        postedAt = "2024-09-10",
+                        description = "Analyze large datasets to derive actionable insights for healthcare applications."
+                    ),
+                    JobDTO(
+                        id = 3,
+                        title = "Data Scientist",
+                        company = CompanyDTO(name = "LMN Inc"),
+                        location = "Remote",
+                        salary = "$110,000 - $150,000",
+                        jobType = "Part-time",
+                        shift = "General",
+                        postedAt = "2024-09-10",
+                        description = "Analyze large datasets to derive actionable insights for healthcare applications."
+                    ),
+                    JobDTO(
+                        id = 3,
+                        title = "Data Scientist",
+                        company = CompanyDTO(name = "LMN Inc"),
+                        location = "Remote",
+                        salary = "$110,000 - $150,000",
+                        jobType = "Part-time",
+                        shift = "General",
+                        postedAt = "2024-09-10",
+                        description = "Analyze large datasets to derive actionable insights for healthcare applications."
+                    ),
+                    JobDTO(
+                        id = 3,
+                        title = "Data Scientist",
+                        company = CompanyDTO(name = "LMN Inc"),
+                        location = "Remote",
+                        salary = "$110,000 - $150,000",
+                        jobType = "Part-time",
+                        shift = "General",
+                        postedAt = "2024-09-10",
+                        description = "Analyze large datasets to derive actionable insights for healthcare applications."
+                    )
+                )
+            )
+
         }
+//        viewModelScope.launch(Dispatchers.IO) {
+//            getJobListingUseCase(_homeUiState.value.currentPage, 10).collect {
+//                handleJobsData(it)
+//            }
+//        }
     }
 
     private fun handleJobsData(resource: Resource<JobListingResponseDTO>) {
